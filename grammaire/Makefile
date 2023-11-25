@@ -8,6 +8,6 @@ compile_grammar:
 	java -jar antlr.jar -o lp while.g
 
 clean:
-	rm -f */*.class
 	rm -fr lp/
 	rm -fr .antlr/
+	rm Main.class
