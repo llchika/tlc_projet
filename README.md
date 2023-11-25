@@ -1,2 +1,2 @@
 # tlc_projet
-Project de TLC
+Project de TLC: langage While 
