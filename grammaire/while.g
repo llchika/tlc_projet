@@ -1,6 +1,13 @@
 grammar while;
 
-//VARIABLE  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
+axiome
+	:	program;
+
+fragment
+COMMUN      : ('a'..'z'|'A'..'Z'|'0'..'9');
+
+fragment
+EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+;
 
 VARIABLE    : 'A'..'Z' COMMUN* ('!'|'?')?;
 SYMBOL      : 'a'..'z' COMMUN* ('!'|'?')?;
@@ -27,18 +34,11 @@ WS  :   ( ' '
         ) {$channel=HIDDEN;}
     ;
 
-fragment
-COMMUN      : ('a'..'z'|'A'..'Z'|'0'..'9');
-
-fragment
-EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
-
 //////////////////////////////////////////////////////////////////////
                     //   Def grammaire While   //
 //////////////////////////////////////////////////////////////////////
 
 program     :  function program? ;
-
 
 function    : 'function' SYMBOL ':' definition;
 
@@ -73,6 +73,3 @@ exprBase    : ( 'nil' | VARIABLE | SYMBOL )
 expression  : exprBase ('=?' exprBase)?;
         
 lExpr       : exprBase lExpr? ;
-
-axiome
-	:	program;
