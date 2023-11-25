@@ -1,0 +1,2 @@
+*.while linguist-language=While
+*.g linguist-language=ANTLR
