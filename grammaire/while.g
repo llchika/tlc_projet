@@ -1,5 +1,13 @@
 grammar while;
 
+@lexer::header {
+    package lp;
+}
+
+@parser::header {
+    package lp;
+}
+
 axiome
 	:	program;
 
