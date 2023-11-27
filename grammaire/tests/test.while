@@ -1,9 +1,9 @@
-function add
-read Op1, Op2
+function add:
+read Op1, Op2, Op3, Op4
 %
 	Result := Op1 ;
 	for Op2 do
 		Result := ( cons nil Result )
 	od
 %
-write Result
+write Result1, Result2

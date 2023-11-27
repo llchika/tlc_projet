@@ -1,5 +1,15 @@
 grammar while;
 
+options {
+    output=AST;
+}
+
+tokens {
+    Instructions;
+    Input;
+    Output;
+}
+
 @lexer::header {
     package lp;
 }
@@ -10,7 +20,7 @@ grammar while;
 
 axiome
 	:	program;
-
+	
 fragment
 COMMUN      : ('a'..'z'|'A'..'Z'|'0'..'9');
 
@@ -41,22 +51,22 @@ WS  :   ( ' '
         | '\n'
         ) {$channel=HIDDEN;}
     ;
-
+    
 //////////////////////////////////////////////////////////////////////
                     //   Def grammaire While   //
 //////////////////////////////////////////////////////////////////////
 
 program     :  function program? ;
 
-function    : 'function' SYMBOL ':' definition;
+function    : 'function' SYMBOL ':' definition -> ^('function' SYMBOL definition);
 
-definition  : 'read' input '%' commands '%' 'write' output;
+definition  : 'read' input '%' commands '%' 'write' output -> ^(Input input) ^(Instructions commands) ^(Output output);
 
-input       : inputSub?;
+input       : inputSub;
 
-inputSub    : VARIABLE ',' inputSub | VARIABLE;
+inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE ;
 
-output      : VARIABLE ',' output | VARIABLE;
+output      : VARIABLE ',' output  -> VARIABLE output | VARIABLE;
 
 commands    : command(';'commands)?;
 
