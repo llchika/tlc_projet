@@ -8,6 +8,9 @@ tokens {
     Instructions;
     Input;
     Output;
+    Set;
+    Condition;
+    Else;
 }
 
 @lexer::header {
@@ -68,14 +71,14 @@ inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE ;
 
 output      : VARIABLE ',' output  -> VARIABLE output | VARIABLE;
 
-commands    : command(';'commands)?;
+commands    : command(';'commands)? -> command commands?;
 
-vars        : VARIABLE ',' vars | VARIABLE;
+vars        : VARIABLE ',' vars| VARIABLE;
 
 exprs       :  expression (',' exprs)?;
 
 command     : 'nop'
-            | vars ':=' exprs
+            | vars ':=' exprs -> ^(Set vars exprs)
             | 'if' expression 'then' commands ('else' commands)? 'fi'
             | 'while' expression 'do' commands 'od'
             | 'for' expression 'do' commands 'od'
@@ -83,8 +86,10 @@ command     : 'nop'
             ;
 
 exprBase    : ( 'nil' | VARIABLE | SYMBOL )
-            | ( '(' 'cons' lExpr ')' | '(' 'list' lExpr ')' )
-            | ( '(' 'hd' exprBase ')' | '(' 'tl' exprBase ')' )
+            | ( '(' 'cons' exprBase exprBase? ')' -> ^('cons' exprBase exprBase?)
+            | '(' 'list' lExpr ')' )
+            | ( '(' 'hd' exprBase ')' 
+            | '(' 'tl' exprBase ')' )
             | ( '(' SYMBOL lExpr ')' )
             ;
 
