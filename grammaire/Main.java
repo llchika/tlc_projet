@@ -15,6 +15,7 @@ public class Main {
         whileParser parser=new whileParser(tokens);
 
         // Voir CommonTree;
+        CommonTree arbre;
 
         try {
             System.out.println(parser.axiome().getTree());

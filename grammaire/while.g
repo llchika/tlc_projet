@@ -41,10 +41,6 @@ tokens {
     package lp;
 }
 
-@parser::members {
-	java.util.HashMap<String,String> m_variables=new java.util.HashMap<String,String>();
-}
-
 axiome
 	:	program;
 	
