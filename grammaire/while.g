@@ -27,6 +27,10 @@ tokens {
     BoucleForeach;
     Foreach;
     In;
+    
+    Tail;
+    Head;
+    List;
 }
 
 @lexer::header {
@@ -103,9 +107,9 @@ command     : 'nop'
 
 exprBase    : ( 'nil' | VARIABLE | SYMBOL )
             | ( '(' 'cons' exprBase exprBase? ')' -> ^('cons' exprBase exprBase?)
-            | '(' 'list' lExpr ')' )
-            | ( '(' 'hd' exprBase ')' 
-            | '(' 'tl' exprBase ')' )
+            | '(' 'list' lExpr ')' -> ^(List))
+            | ( '(' 'hd' exprBase ')' -> ^(Head exprBase) 
+            | '(' 'tl' exprBase ')' -> ^(Tail exprBase))
             | ( '(' SYMBOL lExpr ')' )
             ;
 

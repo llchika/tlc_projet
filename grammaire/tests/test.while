@@ -1,9 +1,17 @@
-function add:
-read Op1, Op2, Op3, Op4
+function fonct :
+read
 %
-	Result := Op1 ;
-	for Op2 do
-		Result := ( cons nil Result )
-	od
+A := B? ;
+A := B, B ;
+A := B =? nil ;
+A := (b) ;
+A := (b B) ;
+A := (b (b (b))) ;
+A, B := B ;
+A := (hd (tl (cons B))) ;
+A := (cons list) ;
+A := (hd nil) ;
+A := (cons nil nil)
+
 %
-write Result1, Result2
+write A
