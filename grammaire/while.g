@@ -94,7 +94,7 @@ output      : VARIABLE ',' output  -> VARIABLE output | VARIABLE;
 
 commands    : command(';'commands)?-> command commands?; 
 
-vars        : VARIABLE ',' vars->VARIABLE vars| VARIABLE;
+vars        : VARIABLE ',' vars -> ^(VARIABLE vars)| VARIABLE;
 
 exprs       :  expression (',' exprs)? -> expression exprs?;
 
