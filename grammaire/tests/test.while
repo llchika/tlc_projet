@@ -9,7 +9,7 @@ A := (b B) ;
 A := (b (b (b))) ;
 A, B := B ;
 A := (hd (tl (cons B))) ;
-A := (cons list) ;
+A := (cons liste) ;
 A := (hd nil) ;
 A := (cons nil nil)
 

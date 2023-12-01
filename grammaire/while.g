@@ -110,7 +110,7 @@ exprBase    : ( 'nil' | VARIABLE | SYMBOL )
             | '(' 'list' lExpr ')' -> ^(List))
             | ( '(' 'hd' exprBase ')' -> ^(Head exprBase) 
             | '(' 'tl' exprBase ')' -> ^(Tail exprBase))
-            | ( '(' SYMBOL lExpr ')' )
+            | ( '(' SYMBOL lExpr? ')' )
             ;
 
 expression  : exprBase ('=?' exprBase)?;
