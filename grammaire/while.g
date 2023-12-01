@@ -5,7 +5,6 @@ options {
 }
 
 tokens {
-  
     Instructions;
     Input;
     Output;
@@ -40,6 +39,10 @@ tokens {
 
 @parser::header {
     package lp;
+}
+
+@parser::members {
+	java.util.HashMap<String,String> m_variables=new java.util.HashMap<String,String>();
 }
 
 axiome
@@ -88,7 +91,7 @@ definition  : 'read' input? '%' commands '%' 'write' output -> ^(Input input)? ^
 
 input       : inputSub;
 
-inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE ;
+inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE;
 
 output      : VARIABLE ',' output  -> VARIABLE output | VARIABLE;
 
@@ -96,10 +99,10 @@ commands    : command(';'commands)?-> command commands?;
 
 vars        : VARIABLE ',' vars -> ^(VARIABLE vars)| VARIABLE;
 
-exprs       :  expression (',' exprs)? -> expression exprs?;
+exprs       :  expression (',' exprs)? -> ^(expression exprs?);
 
 command     : 'nop'
-            | vars ':=' exprs -> ^(Set vars exprs)
+            | vars ':=' exprs -> ^(Set vars exprs) 
             | 'if' expression 'then' commands ('else' commands)? 'fi'->^(BoucleIf  ^(If expression)^(Then commands) ^(Else commands)?)
             | 'while' expression 'do' commands 'od' ->^(BoucleWhile  ^(While expression)^(Do commands) )
             | 'for' expression 'do' commands 'od' ->^(BoucleFor  ^(For expression)^(Do commands) )
