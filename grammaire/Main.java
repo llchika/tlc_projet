@@ -15,12 +15,8 @@ public class Main {
         whileParser parser=new whileParser(tokens);
 
         // Voir CommonTree;
-        CommonTree arbre;
+        CommonTree arbre=(CommonTree)(parser.axiome().getTree());
 
-        try {
-            System.out.println(parser.axiome().getTree());
-        } catch(Exception e) {
-            System.err.println("Problème");
-        }
+        System.out.println(arbre.getChild(1).getText());
     }
 }
