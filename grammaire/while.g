@@ -31,6 +31,7 @@ tokens {
     Tail;
     Head;
     List;
+    IsEqual;
 }
 
 @lexer::header {
@@ -95,7 +96,7 @@ commands    : command(';'commands)?-> command commands?;
 
 vars        : VARIABLE ',' vars->VARIABLE vars| VARIABLE;
 
-exprs       :  expression (',' exprs)?-> expression exprs?;
+exprs       :  expression (',' exprs)? -> expression exprs?;
 
 command     : 'nop'
             | vars ':=' exprs -> ^(Set vars exprs)
@@ -107,12 +108,12 @@ command     : 'nop'
 
 exprBase    : ( 'nil' | VARIABLE | SYMBOL )
             | ( '(' 'cons' exprBase exprBase? ')' -> ^('cons' exprBase exprBase?)
-            | '(' 'list' lExpr ')' -> ^(List))
+            | '(' 'list' lExpr ')' -> ^(List lExpr))
             | ( '(' 'hd' exprBase ')' -> ^(Head exprBase) 
             | '(' 'tl' exprBase ')' -> ^(Tail exprBase))
-            | ( '(' SYMBOL lExpr? ')' )
+            | ( '(' SYMBOL lExpr? ')' -> ^(SYMBOL))
             ;
 
-expression  : exprBase ('=?' exprBase)?;
+expression  : a=exprBase ('=?' b=exprBase -> ^(IsEqual $a $b) | -> $a);
         
 lExpr       : exprBase lExpr? ;
