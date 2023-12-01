@@ -1,3 +1,4 @@
+*.class
 *.jar
 !grammaire/antlr.jar
 output/
