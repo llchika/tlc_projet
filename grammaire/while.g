@@ -95,7 +95,7 @@ commands    : command(';'commands)?-> command commands?;
 
 vars        : VARIABLE ',' vars -> ^(VARIABLE vars)| VARIABLE;
 
-exprs       :  expression (',' exprs)? -> ^(expression exprs?);
+exprs       :  expression (',' exprs -> ^(expression exprs) | -> expression);
 
 command     : 'nop'
             | vars ':=' exprs -> ^(Set vars exprs) 
@@ -110,9 +110,9 @@ exprBase    : ( 'nil' | VARIABLE | SYMBOL )
             | '(' 'list' lExpr ')' -> ^(List lExpr))
             | ( '(' 'hd' exprBase ')' -> ^(Head exprBase) 
             | '(' 'tl' exprBase ')' -> ^(Tail exprBase))
-            | ( '(' SYMBOL lExpr? ')' -> ^(SYMBOL))
+            | ( '(' SYMBOL lExpr? ')' -> ^(SYMBOL lExpr?))
             ;
 
-expression  : a=exprBase ('=?' b=exprBase -> ^(IsEqual $a $b) | -> $a) ;
+expression  : exprBase ('=?' exprBase -> ^(IsEqual exprBase exprBase) | -> exprBase) ;
         
 lExpr       : exprBase lExpr? ;
