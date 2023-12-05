@@ -56,6 +56,3 @@ clean:
 	@rm -fr build
 	@rm -fr src/lp
 	@find . -name *.class -exec rm {} \;
-
-help:
-	@echo $(CLASSES)
