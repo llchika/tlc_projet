@@ -91,7 +91,7 @@ inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE;
 
 output      : VARIABLE ',' output  -> VARIABLE output | VARIABLE;
 
-commands    : command(';'commands)?-> command commands?; 
+commands    : command(';'commands)?-> command commands?;
 
 vars        : VARIABLE ',' vars -> ^(VARIABLE vars)| VARIABLE;
 
@@ -113,6 +113,6 @@ exprBase    : ( 'nil' | VARIABLE | SYMBOL )
             | ( '(' SYMBOL lExpr? ')' -> ^(SYMBOL))
             ;
 
-expression  : a=exprBase ('=?' b=exprBase -> ^(IsEqual $a $b) | -> $a);
+expression  : a=exprBase ('=?' b=exprBase -> ^(IsEqual $a $b) | -> $a) ;
         
 lExpr       : exprBase lExpr? ;
