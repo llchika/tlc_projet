@@ -6,6 +6,7 @@ import lp.whileParser;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        System.out.println("programm start");
         String inputFile="tests/test.while";
 
         ANTLRStringStream input=new ANTLRFileStream(inputFile);
