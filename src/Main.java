@@ -28,11 +28,25 @@ public class Main {
     private static void parcourir(CommonTree noeud) {
         if (noeud.getText().equals("Set")) {
             verifSet(noeud);
-        } else {
+        } else if (noeud.getText().equals("Input")) {
+            verifInput(noeud);
+        }else {
             for (int i=0; i<noeud.getChildCount(); i++) {
                 parcourir((CommonTree)(noeud.getChild(i)));
             }
         }
+    }
+
+
+    private static void verifInput(CommonTree noeud) throws RuntimeException {
+        CommonTree tmp=noeud;
+        while (tmp.getChildCount()!=0) {
+            if (!variables.contains(tmp.getChild(0).getText())) {
+                variables.add(tmp.getChild(0).getText());
+            }
+            tmp=(CommonTree)(tmp.getChild(0));
+        }
+
     }
 
     private static void verifSet(CommonTree noeud) throws RuntimeException {
@@ -58,9 +72,9 @@ public class Main {
         }
 
         if (gauche==droite || droite==1) {
+            System.out.println("Variable OK");
         } else {
             throw new RuntimeException("Variable "+ noeud.getChild(0).getText() +" mal formée");
         }
-
     }
 }
