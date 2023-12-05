@@ -5,7 +5,6 @@ options {
 }
 
 tokens {
-  
     Instructions;
     Input;
     Output;
@@ -27,6 +26,11 @@ tokens {
     BoucleForeach;
     Foreach;
     In;
+    
+    Tail;
+    Head;
+    List;
+    IsEqual;
 }
 
 @lexer::header {
@@ -83,18 +87,18 @@ definition  : 'read' input? '%' commands '%' 'write' output -> ^(Input input)? ^
 
 input       : inputSub;
 
-inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE ;
+inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE;
 
 output      : VARIABLE ',' output  -> VARIABLE output | VARIABLE;
 
 commands    : command(';'commands)?-> command commands?; 
 
-vars        : VARIABLE ',' vars->VARIABLE vars| VARIABLE;
+vars        : VARIABLE ',' vars -> ^(VARIABLE vars)| VARIABLE;
 
-exprs       :  expression (',' exprs)?-> expression exprs?;
+exprs       :  expression (',' exprs)? -> ^(expression exprs?);
 
 command     : 'nop'
-            | vars ':=' exprs -> ^(Set vars exprs)
+            | vars ':=' exprs -> ^(Set vars exprs) 
             | 'if' expression 'then' commands ('else' commands)? 'fi'->^(BoucleIf  ^(If expression)^(Then commands) ^(Else commands)?)
             | 'while' expression 'do' commands 'od' ->^(BoucleWhile  ^(While expression)^(Do commands) )
             | 'for' expression 'do' commands 'od' ->^(BoucleFor  ^(For expression)^(Do commands) )
@@ -103,12 +107,12 @@ command     : 'nop'
 
 exprBase    : ( 'nil' | VARIABLE | SYMBOL )
             | ( '(' 'cons' exprBase exprBase? ')' -> ^('cons' exprBase exprBase?)
-            | '(' 'list' lExpr ')' )
-            | ( '(' 'hd' exprBase ')' 
-            | '(' 'tl' exprBase ')' )
-            | ( '(' SYMBOL lExpr ')' )
+            | '(' 'list' lExpr ')' -> ^(List lExpr))
+            | ( '(' 'hd' exprBase ')' -> ^(Head exprBase) 
+            | '(' 'tl' exprBase ')' -> ^(Tail exprBase))
+            | ( '(' SYMBOL lExpr? ')' -> ^(SYMBOL))
             ;
 
-expression  : exprBase ('=?' exprBase)?;
+expression  : a=exprBase ('=?' b=exprBase -> ^(IsEqual $a $b) | -> $a);
         
 lExpr       : exprBase lExpr? ;
