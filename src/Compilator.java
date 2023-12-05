@@ -6,7 +6,7 @@ import lp.whileParser;
 
 import java.util.ArrayList;
 
-public class Main {
+public class Compilator {
     private static ArrayList<String> variables=new ArrayList<String>();
 
     public static void main(String[] args) throws Exception {
