@@ -1,3 +1,4 @@
+import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 
@@ -7,13 +8,22 @@ import lp.whileParser;
 import verif.Verificator;
 import adresses.Generator;
 
+import java.io.File;
+
 public class Compilator {
     
 
     public static void main(String[] args) throws Exception {
-        String inputFile="tests/test.while";
+        if (args.length!=0) {
+            File file=new File(args[0]);
+            if(!file.exists()) {
+                throw new Exception("Le fichier n'existe pas.");
+            }
+        } else {
+            throw new Exception("Aucun fichier saisi");
+        }
 
-        ANTLRStringStream input=new ANTLRFileStream(inputFile);
+        ANTLRStringStream input=new ANTLRFileStream(args[0]);
         
         whileLexer lexer=new whileLexer(input);
         CommonTokenStream tokens=new CommonTokenStream(lexer);
@@ -23,6 +33,10 @@ public class Compilator {
         CommonTree arbre=(CommonTree)(parser.axiome().getTree());
 
         boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
-        Generator.test();
+        if (valide) {
+            Generator.execute(); // Génération code 3 adresses
+        } else {
+            System.out.println("Problème inconnu");
+        }
     }
 }

@@ -48,7 +48,7 @@ $(BUILD_DIR)/%.class: $(SOURCE_DIR)/%.java
 # Éxecute le Compilator
 start:
 	@echo "$(CYAN)Executing$(NC) $(GREEN)$(EXE)$(NC)"
-	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) $(EXE)
+	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) $(EXE) "$(file)"
 
 # Nettoie le projet
 clean:

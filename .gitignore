@@ -1,8 +1,18 @@
 *.class
 *.jar
 !grammaire/antlr.jar
+
+# Antlrworks
 output/
+
 .antlr/
+
+# VSCode...
 .vscode/
 lp/
 build/
+
+# Eclipse
+bin/
+.classpath
+.project
