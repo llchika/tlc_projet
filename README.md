@@ -18,7 +18,7 @@ Le projet est structuré ainsi:
 
 ## Compilation
 La compilation du projet se fait via un Makefile.<br>
-Makefile testé sous Linux (Debian), devrait à priori fonctionner pour Linux/MacOS, mais pas pour Windows (ce qui est logique car Java est un langage **universel**)<br><br>
+Testé sous Linux (Debian), devrait à priori fonctionner pour Linux/MacOS, mais pas pour Windows (ce qui est logique car Java est un langage **universel**)<br><br>
 Pour compiler le compilateur
 ```
 make
