@@ -1,6 +1,6 @@
 # Projet: Théorie des langages et compilation
 Projet réalisé dans le cadre du module « Théorie des langages et compilation ».
-
+a
 Création d'un compilateur (pas encore) pour une variante du langage While, en utilisant antlr 3.5 et Java.
 
 ## Structure du projet
