@@ -46,7 +46,7 @@ $(BUILD_DIR)/%.class: $(SOURCE_DIR)/%.java
 	@javac -cp .:$(ANTLRPATH) -d $(BUILD_DIR) $<
 
 # Éxecute le Compilator
-start:
+start: $(BUILD_DIR)/$(EXE)
 	@echo "$(CYAN)Executing$(NC) $(GREEN)$(EXE)$(NC)"
 	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) $(EXE) "$(file)"
 
