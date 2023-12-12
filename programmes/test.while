@@ -1,7 +1,7 @@
 function fonct :
-read B
+read B, C
 %
-A,C := B?
+A := B?
 
 %
 write A

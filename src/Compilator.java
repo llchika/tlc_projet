@@ -6,7 +6,8 @@ import lp.whileLexer;
 import lp.whileParser;
 
 import verif.Verificator;
-import adresses.Generator;
+import src.adresses.Generator;
+import src.adresses.Instruction3Ad;
 
 import java.io.File;
 
@@ -34,7 +35,8 @@ public class Compilator {
 
         boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
         if (valide) {
-            Generator.execute(); // Génération code 3 adresses
+            Generator.generateCodeFrom(arbre); // Génération code 3 adresses
+            Generator.printCode();
         } else {
             System.out.println("Problème inconnu");
         }
