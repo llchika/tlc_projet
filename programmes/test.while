@@ -2,6 +2,7 @@ function vache :
 read A, B, C
 %
 	Z:=A;
+	Z:=B;
 	Y:=B;
 	X:=C
 %

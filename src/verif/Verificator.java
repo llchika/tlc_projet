@@ -200,9 +200,14 @@ public class Verificator {
         CommonTree filsGauche=(CommonTree)(noeud.getChild(0)); // À gauche du égal
         CommonTree filsDroit=(CommonTree)(noeud.getChild(1)); // À droite du égal
 
+        ArrayList<String> variablesVues=new ArrayList<>();
+
         // Création des variables
         while (filsGauche!=null) {
-            if (!putVar(filsGauche.getChild(0).getText())) {
+            if (!variablesVues.contains(filsGauche.getChild(0).getText())) {
+                variablesVues.add(filsGauche.getChild(0).getText());
+                putVar(filsGauche.getChild(0).getText());
+            } else {
                 throw new RuntimeException("Multiple assignment of  " + filsGauche.getChild(0).getText());
             }
             //System.out.println(variables);
