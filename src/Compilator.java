@@ -1,6 +1,6 @@
 package src;
 
-import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
+import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return; // ???
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 
@@ -12,8 +12,13 @@ import src.adresses.Generator;
 
 import java.io.File;
 
+/**
+ * Main, charge les fichiers sources, le parser et le lexer,
+ * lance la vérification de l'AST et la génération du code 3 adresses
+ */
 public class Compilator {
     public static void main(String[] args) throws Exception {
+        // TODO gérer le chargement de plusieurs fichiers sources
         if (args.length!=0) {
             File file=new File(args[0]);
             if(!file.exists()) {
@@ -29,8 +34,7 @@ public class Compilator {
         CommonTokenStream tokens=new CommonTokenStream(lexer);
         whileParser parser=new whileParser(tokens);
 
-        // Voir CommonTree;
-        CommonTree arbre=(CommonTree)(parser.axiome().getTree());
+        CommonTree arbre=(CommonTree)(parser.axiome().getTree()); // Génération de l'AST
 
         boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
         /*if (valide) {

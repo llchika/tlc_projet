@@ -7,10 +7,16 @@ import src.utils.Triplet;
 
 import org.antlr.runtime.tree.CommonTree;
 
-// Classe qui permet de vérifier la sémantique
+/*
+ * Classe effectuant la vérification sémantique à partir d'un AST
+ */
 public class Verificator {
-    // Stockage des variables définies dans le programme
+    // Liste des variables disponibles
     private static ArrayList<String> variables=new ArrayList<String>();
+
+    // Liste des fonctions disponibles
+    // Un Triplet correspond à : (Nom de fonction, nombre de valeurs en sortie, nombre de valeurs en entrée)
+    // Les fonctions enregistrées correspond aux fonctions de la bibliothèque native
     private static ArrayList<Triplet<String, Integer>> functions=new ArrayList<>(Arrays.asList(
         new Triplet<>("cons", 1, -1),
         new Triplet<>("list", 1, -1),
@@ -19,14 +25,18 @@ public class Verificator {
         new Triplet<>("not", 1, 1)
     ));
 
-    // Execution de la procédure de vérification à partir du noeud noeud
+    /**
+     * Lance l'analyse sémantique
+     * @param noeud: Arbre de syntaxe abstraite à analyser
+     * @return vrai (true) si le code est correct, faux (false) sinon
+     */
     public static boolean execute(CommonTree noeud) {
         try {
             if (noeud.getText()==null) { // S'il y a plusieurs fonctions déclarées, la racine de l'arbre vaut null
                 int mainFound=0;
                 for (int i=0; i<noeud.getChildCount(); i++) { // On parcourt les fonctions
                     if (noeud.getChild(i).getText()=="Function") {
-                        if (noeud.getChild(i).getChild(0).getText().equals("main")) {
+                        if (noeud.getChild(i).getChild(0).getText().equals("main")) { // On s'ssure qu'il n'y a qu'un main dans le programme
                             mainFound++;
                         }
                     } else {
@@ -36,7 +46,8 @@ public class Verificator {
                 if (mainFound==1) { // Début du parcours de l'arbre, on sait qu'on a que des fonctions ici
                     for (int i=0; i<noeud.getChildCount(); i++) {
                         variables=new ArrayList<String>(); // Remise à 0 du contexte
-                        parcourir((CommonTree)(noeud.getChild(i))); // Le programme s'arrête là s'il y a une erreur
+                        parcourir((CommonTree)(noeud.getChild(i))); // On parcourt l'arbre d'une fonction
+                        // S'il y a une erreur, l'analyse se sera arrêtée avant d'arriver ici
                         
                         String funName=noeud.getChild(i).getChild(0).getText();
 
@@ -59,13 +70,13 @@ public class Verificator {
                 } else {
                     throw new RuntimeException("main not found");
                 }
-            } else if (noeud.getText().equals("Function")) {
-                if (!noeud.getChild(0).getText().equals("main")) {
+            } else if (noeud.getText().equals("Function")) { // S'il n'y a qu'une fonction dans le programme, vaut Function
+                if (!noeud.getChild(0).getText().equals("main")) { // Il faut alors que cette fonction soit un Main
                     throw new RuntimeException("main not found");
                 }
                 parcourir(noeud); // Parcours de l'arbre
             } else {
-                throw new RuntimeException("unknown problem");
+                throw new RuntimeException("unknown problem"); // ???
             }
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -74,24 +85,23 @@ public class Verificator {
         return true;
     }
 
-    // Parcours de noeuf
+    /**
+     * Parcours récursif d'un arbre
+     * @param noeud: Noeud à analyser...
+     */
     private static void parcourir(CommonTree noeud) {
-        //System.out.println(noeud.getText());
         /*
          * /!\ Ne pas remplacer par un switch case, pas convaincu que Java va savoir utiliser le bon == /!\
          */
         if (noeud.getText()==null) {
 
         }
-        // Cas ou le noeud est un Set
         else if (noeud.getText().equals("Set")) {
             verifSet(noeud);
         }
-        // Cas ou le noeud est un Input
         else if (noeud.getText().equals("Input")) {
             verifInput(noeud);
         }
-        // Cas ou le noeud est un output
         else if (noeud.getText().equals("Output")) {
             verifOutput(noeud);
         } 
@@ -115,14 +125,24 @@ public class Verificator {
         }
     }
 
-    // Vérification de l'appartenance de variable à variables
+
+    /**
+     * Vérifie l'existence d'une variable
+     * @param varName: Variable à vérifier
+     * @return vrai (true) si la variable existe, faux (false) sinon
+     */
     private static boolean verifVar(String varName) {
         return variables.contains(varName);
     }
 
+
     // Ajout du nom de la variable aux variables existantes
+    /**
+     * Ajoute une variable à la liste des variables existantes
+     * @param varName: Variable à ajouter
+     * @return vrai (true) si la variable a été ajoutée, faux (false) sinon
+     */
     private static boolean putVar(String varName) {
-        //System.out.println(varName);
         if (!verifVar(varName)) { // Si la variable n'est pas déjà dedans
             variables.add(varName);
             return true;
@@ -130,6 +150,12 @@ public class Verificator {
         return false;
     }
 
+
+    /**
+     * Vérifie qu'une fonction existe
+     * @param funName: Nom de la fonction à vérifier
+     * @return vrai (true) si la fonction existe, faux (false) sinon
+     */
     private static boolean verifFun(String funName) {
         for (int i=0; i<functions.size(); i++) {
             if (functions.get(i).getKey().equals(funName)) {
@@ -139,6 +165,12 @@ public class Verificator {
         return false;
     }
 
+
+    /**
+     * Donne le nombre de valeurs retournées par une fonction
+     * @param funName: Nom de la fonction à chercher
+     * @return Nombre de valeurs retournées par la fonction, si la fonction n'existe pas renvoie -1
+     */
     private static int getFunRetN(String funName) {
         for (int i=0; i<functions.size(); i++) {
             if (functions.get(i).getKey().equals(funName)) {
@@ -148,6 +180,12 @@ public class Verificator {
         return -1;
     }
 
+
+    /**
+     * Donne paramètres d'une fonction
+     * @param funName: Nom de la fonction à chercher
+     * @return Nombre paramètres de la fonction, si la fonction n'existe pas renvoie -1
+     */
     private static int getFunArgsN(String funName) {
         for (int i=0; i<functions.size(); i++) {
             if (functions.get(i).getKey().equals(funName)) {
@@ -157,6 +195,13 @@ public class Verificator {
         return -1;
     }
 
+    /**
+     * Ajoute une fonction de la liste des fonctions connues
+     * @param funName: Nom de la fonction
+     * @param nRet: Nombre de valeurs retournées
+     * @param nArgs: Nombre de paramètres
+     * @return vrai (true) si la fonction a été ajoutée, faux (false) sinon
+     */
     private static boolean putFun(String funName, int nRet, int nArgs) {
         if (!verifFun(funName)) {
             functions.add(new Triplet<>(funName, nRet, nArgs));
@@ -165,14 +210,24 @@ public class Verificator {
         return false;
     }
 
-    // Vérification d'un noeud Input
+
+    /**
+     * Vérification d'un arbre correspondand à un Input
+     * Créé par l'instruction Read d'une fonction
+     * @param noeud: Arbre à vérifier
+     */
     private static void verifInput(CommonTree noeud) {
         for (int i = 0; i<noeud.getChildCount(); i++) {
             putVar(noeud.getChild(i).getText());
         }
     }
 
-    // Vérification d'un noeud Output
+
+    /**
+     * Vérification d'un arbre correspondand à un Output
+     * Créé par l'instruction Write d'une fonction
+     * @param noeud: Arbre à vérifier
+     */
     private static void verifOutput(CommonTree noeud) throws RuntimeException {
         for (int i = 0; i < noeud.getChildCount(); i++) {
             if (!verifVar(noeud.getChild(i).getText())) {
@@ -181,20 +236,29 @@ public class Verificator {
         }
     }
 
+    /**
+     * Vérification d'un arbre correspondand à un FunCall
+     * Créé par les appels de fonction, vérifie 
+     * que les expressions utilisée en paramètres sont
+     * valides et que la fonction existe
+     * @param noeud: Arbre à vérifier
+     */
     private static void verifFunCall(CommonTree noeud) throws RuntimeException {
-        String funName=noeud.getChild(0).getText(); // nom de la fonction
+        String funName=noeud.getChild(0).getText(); // Nom de la fonction
         if (!verifFun(funName)) {
             throw new RuntimeException("Undefined function "+funName);
         }
+
         // Arguments
-        CommonTree args=(CommonTree)(noeud.getChild(1));// ie noeud args hein
-        int tmp=getFunArgsN(funName);
+        CommonTree args=(CommonTree)(noeud.getChild(1));// Noeud Args
+        int tmp=getFunArgsN(funName); // Nombre de paramètres
         if (tmp!=-1) { // -1 <=> Plusieurs paramètres ok
-            if (args.getChildCount()!=tmp) {
-                throw new RuntimeException("Wrong number of argument in "+funName+" call. "+args.getChildCount()+"/"+tmp);
+            if (args.getChildCount()!=tmp) { // Vérifie qu'on a le bon nombre de paramètres
+                throw new RuntimeException("Wrong number of argument in "+funName+" call. "+args.getChildCount()+"/"+tmp+ " (g/e)");
             }
         }
-        for (int i=0; i<args.getChildCount(); i++) {
+
+        for (int i=0; i<args.getChildCount(); i++) { // Vérifie que les paramètres sont valides
             switch (args.getChild(i).getText()) {
                     case "Var": {
                         if (!verifVar(args.getChild(i).getChild(0).getText())) {
@@ -216,6 +280,14 @@ public class Verificator {
         }
     }
 
+    /**
+     * Vérification d'un arbre correspondand à un Set
+     * Créé par les affectations de variable
+     * Vérifie qu'il y a le bon nombre de variables
+     * affecté/à affecter et que les valeurs à affecter
+     * existent bien.
+     * @param noeud: Arbre à vérifier
+     */
     private static void verifSet(CommonTree noeud) throws RuntimeException {
         // Variables pour vérifier si la sémantique est bonne
         int gauche=0, droite=0;
@@ -224,7 +296,7 @@ public class Verificator {
 
         ArrayList<String> variablesVues=new ArrayList<>();
 
-        // Vérification des valeurs
+        // Vérification des affectées
         while (filsDroit!=null) {
             if (filsDroit.getText().equals("Exprs")) {
                 switch (filsDroit.getChild(0).getText()) {
@@ -275,14 +347,18 @@ public class Verificator {
         }
     }
 
+    /**
+     * Vérification d'un arbre correspondand à un If
+     * Créé par les commandes if
+     * @param noeud: Arbre à vérifier
+     */
     private static void verifIf(CommonTree noeud) throws RuntimeException {
-        CommonTree condition=(CommonTree)(noeud.getChild(0).getChild(0));   // noeud Condition
+        CommonTree condition=(CommonTree)(noeud.getChild(0).getChild(0)); // Noeud Condition
         if(condition.getText().equals("Var")) {
             System.out.println(condition.getChild(0).getText());
             if (!verifVar(condition.getChild(0).getText())) {
                 throw new RuntimeException("Undefined variable "+condition.getChild(0).getText());
-             }
-
+            }
         }
         else if(condition.getText().equals("FunCall")) {
             verifFunCall(condition);
@@ -295,7 +371,7 @@ public class Verificator {
             parcourir((CommonTree)(noeud.getChild(i)));
 
             String tmp;
-            do {
+            do { // On supprime le contexte
                 tmp=variables.get(variables.size()-1);
                 variables.remove(variables.size()-1);
             } while (tmp!=null);
@@ -303,8 +379,13 @@ public class Verificator {
     }
 
 
+    /**
+     * Vérification d'un arbre correspondand à un For ou un While
+     * Créé par les commandes For et While
+     * @param noeud: Arbre à vérifier
+     */
     private static void verifForWhile(CommonTree noeud) throws RuntimeException {
-        CommonTree forWhile=(CommonTree)(noeud.getChild(0));   // noeud For ou While
+        CommonTree forWhile=(CommonTree)(noeud.getChild(0));   // Noeud For ou While
         if(forWhile.getText().equals("Var")) {
             if (!verifVar(forWhile.getChild(0).getText())) {
                 throw new RuntimeException("Undefined variable "+forWhile.getChild(0).getText());
@@ -320,14 +401,14 @@ public class Verificator {
         parcourir((CommonTree)(noeud.getChild(1)));
 
         String tmp;
-        do {
+        do { // On supprime le contexte
             tmp=variables.get(variables.size()-1);
             variables.remove(variables.size()-1);
         } while (tmp!=null);
     }
 
     private static void verifForEach(CommonTree noeud) throws RuntimeException {
-        CommonTree forEach=(CommonTree)(noeud.getChild(1));   // noeud For ou While
+        CommonTree forEach=(CommonTree)(noeud.getChild(1));   // Noeud ForEach
         if(forEach.getText().equals("Var")) {
             if (!verifVar(forEach.getChild(0).getText())) {
                 throw new RuntimeException("Undefined variable "+forEach.getChild(0).getText());
@@ -345,7 +426,7 @@ public class Verificator {
         parcourir((CommonTree)(noeud.getChild(2)));
 
         String tmp;
-        do {
+        do { // On supprime le contexte
             tmp=variables.get(variables.size()-1);
             variables.remove(variables.size()-1);
         } while (tmp!=null);
