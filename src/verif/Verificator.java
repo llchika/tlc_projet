@@ -104,6 +104,9 @@ public class Verificator {
         else if (noeud.getText().equals("While")) {
             verifForWhile(noeud);
         }
+        else if (noeud.getText().equals("ForEach")) {
+            verifForEach(noeud);
+        }
         // Et puis sinon on parcour les enfants du noeud
         else {
             for (int i = 0; i < noeud.getChildCount(); i++) {
@@ -315,6 +318,31 @@ public class Verificator {
 
         variables.add(null); // Créaction du contexte
         parcourir((CommonTree)(noeud.getChild(1)));
+
+        String tmp;
+        do {
+            tmp=variables.get(variables.size()-1);
+            variables.remove(variables.size()-1);
+        } while (tmp!=null);
+    }
+
+    private static void verifForEach(CommonTree noeud) throws RuntimeException {
+        CommonTree forEach=(CommonTree)(noeud.getChild(1));   // noeud For ou While
+        if(forEach.getText().equals("Var")) {
+            if (!verifVar(forEach.getChild(0).getText())) {
+                throw new RuntimeException("Undefined variable "+forEach.getChild(0).getText());
+             }
+
+        }
+        else if(forEach.getText().equals("FunCall")) {
+            verifFunCall(forEach);
+        }
+        // forWhile ok
+        
+        variables.add(null); // Créaction du contexte
+
+        putVar(noeud.getChild(0).getText());
+        parcourir((CommonTree)(noeud.getChild(2)));
 
         String tmp;
         do {

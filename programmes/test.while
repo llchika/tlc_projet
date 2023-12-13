@@ -21,8 +21,9 @@ write Z, Y, F, E*/
 function lewhilefor :
 read Op2
 %
-	while Op2 do
-		Result := ( cons nil Op2 )
+	foreach C in Op2 
+	do
+		A:=(cons C)
 	od
 %
 write Op2
