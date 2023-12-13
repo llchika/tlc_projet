@@ -35,8 +35,6 @@ public class Compilator {
         boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
         if (valide) {
             Generator.execute(); // Génération code 3 adresses
-        } else {
-            System.out.println("Problème inconnu");
         }
     }
 }

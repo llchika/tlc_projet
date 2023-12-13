@@ -4,3 +4,15 @@ read A
 	C,B:=A
 %
 write C
+function fonct2 :
+read A
+%
+	C,B:=A
+%
+write C
+function main :
+read A
+%
+	C,B:=A
+%
+write C

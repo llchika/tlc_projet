@@ -14,6 +14,23 @@ public class Verificator {
     // Execution de la procédure de vérification à partir du noeud noeud
     public static boolean execute(CommonTree noeud) {
         try {
+            if (noeud.getText()==null) { // S'il y a plusieurs fonctions déclarées, la racine de l'arbre vaut null
+                boolean mainFound=false;
+                for (int i=0; i<noeud.getChildCount(); i++) { // On parcourt les fonctions
+                    if (noeud.getChild(i).getText()=="Function") {
+                        if (noeud.getChild(i).getChild(0).getText().equals("main")) {
+                            mainFound=true;
+                        }
+                    } else {
+                        throw new RuntimeException("Instruction out of function");
+                    }
+                }
+                if (!mainFound) {
+                    throw new RuntimeException("main not found");
+                }
+            } else {
+
+            }
             parcourir(noeud);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -24,8 +41,11 @@ public class Verificator {
 
     // Parcours de noeuf
     private static void parcourir(CommonTree noeud) {
+        if (noeud.getText()==null) {
+
+        }
         // Cas ou le noeud est un Set
-        if (noeud.getText().equals("Set")) {
+        else if (noeud.getText().equals("Set")) {
             verifSet(noeud);
         }
         // Cas ou le noeud est un Input
