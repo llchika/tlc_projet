@@ -18,7 +18,7 @@ NC=\033[0m
 all: $(BUILD_DIR)/$(EXE)
 
 # Recette du Compilator
-$(BUILD_DIR)/$(EXE): $(BUILD_DIR)/lp/whileLexer.class $(BUILD_DIR)/lp/whileParser.class $(CLASSES)
+$(BUILD_DIR)/$(EXE).class: $(BUILD_DIR)/lp/whileLexer.class $(BUILD_DIR)/lp/whileParser.class $(CLASSES)
 	@echo "$(BLEU)Compiling$(NC) $(GREEN)$(EXE)$(NC)"
 	@javac -cp .:$(ANTLRPATH):$(BUILD_DIR) -d $(BUILD_DIR) $(SOURCE_DIR)/$(EXE).java
 
@@ -46,7 +46,7 @@ $(BUILD_DIR)/%.class: $(SOURCE_DIR)/%.java
 	@javac -cp .:$(ANTLRPATH) -d $(BUILD_DIR) $<
 
 # Éxecute le Compilator
-start: $(BUILD_DIR)/$(EXE)
+start: $(BUILD_DIR)/$(EXE).class
 	@echo "$(CYAN)Executing$(NC) $(GREEN)$(EXE)$(NC)"
 	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) $(EXE) "$(file)"
 

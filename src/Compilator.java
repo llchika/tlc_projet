@@ -11,8 +11,6 @@ import adresses.Generator;
 import java.io.File;
 
 public class Compilator {
-    
-
     public static void main(String[] args) throws Exception {
         if (args.length!=0) {
             File file=new File(args[0]);
