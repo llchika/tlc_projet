@@ -5,31 +5,6 @@ options {
 }
 
 tokens {
-    PROGRAM;
-    FUNCTION;
-    FUNCTION_NAME;
-    DEFINITION;
-    INPUT;
-    VARIABLE;
-    OUTPUT;
-    COMMANDS;
-    VARS;
-    EXPRESSIONS;
-    NOP;
-    IF;
-    WHILE;
-    FOR;
-    FOREACH;
-    NIL;
-    SYMBOL;
-    CONS;
-    LIST;
-    HD;
-    TL;
-    SYMBOL_EXPR;
-    EXPRESSION;
-    LEXPR;
-    
     Var;
     Function;
     Commands;
