@@ -52,9 +52,6 @@ public class Verificator {
 
     // Vérification de l'appartenance de variable à variables
     private static boolean verifVar(String varName) {
-        if (varName.contains("?")) {
-            varName = varName.replace("?", "");
-        }
         return variables.contains(varName);
     }
 
