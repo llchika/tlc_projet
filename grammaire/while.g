@@ -25,6 +25,7 @@ tokens {
     While;
     For;
     ForEach;
+    NOP;
 }
 
 
