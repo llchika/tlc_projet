@@ -28,8 +28,12 @@ public class Verificator {
                 if (!mainFound) {
                     throw new RuntimeException("main not found");
                 }
+            } else if (noeud.getText().equals("Function")) {
+                if (!noeud.getChild(0).getText().equals("main")) {
+                    throw new RuntimeException("main not found");
+                }
             } else {
-
+                throw new RuntimeException("unknown problem");
             }
             parcourir(noeud);
         } catch (RuntimeException e) {
