@@ -1,15 +1,22 @@
 package src.verif;
 
 import java.util.ArrayList;
-import src.utils.Pair;
+import java.util.Arrays;
+
+import src.utils.Triplet;
 
 import org.antlr.runtime.tree.CommonTree;
 
 // Classe qui permet de vérifier la sémantique
 public class Verificator {
     // Stockage des variables définies dans le programme
-    private static ArrayList<String> variables = new ArrayList<String>();
-    private static ArrayList<Pair<String, Integer>> functions = new ArrayList<Pair<String, Integer>>();
+    private static ArrayList<String> variables=new ArrayList<String>();
+    private static ArrayList<Triplet<String, Integer>> functions=new ArrayList<>(Arrays.asList(
+        new Triplet<>("cons", 1, -1),
+        new Triplet<>("list", 1, -1),
+        new Triplet<>("hd", 1, 1),
+        new Triplet<>("tl", 1, 1)
+    ));
 
     // Execution de la procédure de vérification à partir du noeud noeud
     public static boolean execute(CommonTree noeud) {
@@ -35,7 +42,7 @@ public class Verificator {
             } else {
                 throw new RuntimeException("unknown problem");
             }
-            parcourir(noeud);
+            parcourir(noeud); // Pas de problème, on commence le parcours de l'arbre
         } catch (RuntimeException e) {
             e.printStackTrace();
             return false;
@@ -75,7 +82,7 @@ public class Verificator {
 
     // Ajout du nom de la variable aux variables existantes
     private static boolean putVar(String varName) {
-        System.out.println(varName);
+        //System.out.println(varName);
         if (!verifVar(varName)) { // Si la variable n'est pas déjà dedans
             variables.add(varName);
             return true;
@@ -83,9 +90,44 @@ public class Verificator {
         return false;
     }
 
+    private static boolean verifFun(String funName) {
+        for (int i=0; i<functions.size(); i++) {
+            if (functions.get(i).getKey().equals(funName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static int getFunRetN(String funName) {
+        for (int i=0; i<functions.size(); i++) {
+            if (functions.get(i).getKey().equals(funName)) {
+                return functions.get(i).getValue1();
+            }
+        }
+        return -1;
+    }
+
+    private static int getFunArgsN(String funName) {
+        for (int i=0; i<functions.size(); i++) {
+            if (functions.get(i).getKey().equals(funName)) {
+                return functions.get(i).getValue2();
+            }
+        }
+        return -1;
+    }
+
+    private static boolean putFun(String funName, int nRet, int nArgs) {
+        if (!verifFun(funName)) {
+            functions.add(new Triplet<>(funName, nRet, nArgs));
+            return true;
+        }
+        return false;
+    }
+
     // Vérification d'un noeud Input
     private static void verifInput(CommonTree noeud) {
-        for (int i = 0; i < noeud.getChildCount(); i++) {
+        for (int i = 0; i<noeud.getChildCount(); i++) {
             putVar(noeud.getChild(i).getText());
         }
     }
@@ -176,53 +218,92 @@ public class Verificator {
       }
       }
 
+    private static void verifFunCall(CommonTree noeud) throws RuntimeException {
+        String funName=noeud.getChild(0).getText(); // nom de la fonction
+        if (!verifFun(funName)) {
+            throw new RuntimeException("Undefined function "+funName);
+        }
+        // Arguments
+        CommonTree args=(CommonTree)(noeud.getChild(1));// ie noeud args hein
+        int tmp=getFunArgsN(funName);
+        if (tmp!=-1) { // -1 <=> Plusieurs paramètres ok
+            if (args.getChildCount()!=tmp) {
+                throw new RuntimeException("Wrong number of argument in "+funName+" call. "+args.getChildCount()+"/"+tmp);
+            }
+        }
+        for (int i=0; i<args.getChildCount(); i++) {
+            switch (args.getChild(i).getText()) {
+                    case "Var": {
+                        if (!verifVar(args.getChild(i).getChild(0).getText())) {
+                            throw new RuntimeException("Undefined variable "+args.getChild(i).getChild(0).getText());
+                        } 
+                        break;
+                    }
+                    case "FunCall": {
+                        String funNamet=args.getChild(i).getChild(0).getText();
+                        if (!verifFun(funNamet)) {
+                            throw new RuntimeException("Undefined function "+funNamet);
+                        }
+                        verifFunCall((CommonTree)(args.getChild(i)));
+                        break;
+                    }
+                    default:
+                        break;
+                }
+        }
+    }
+
     private static void verifSet(CommonTree noeud) throws RuntimeException {
         // Variables pour vérifier si la sémantique est bonne
         int gauche = 0, droite = 0;
         CommonTree filsGauche = (CommonTree) (noeud.getChild(0)); // À gauche du égal
         CommonTree filsDroit = (CommonTree) (noeud.getChild(1)); // À droite du égal
 
-        // Parcours du fils gauche: on les comptes et on ajoute les nouvelles variables
-        do {
+        // Création des variables
+        while (filsGauche!=null) {
             if (!putVar(filsGauche.getChild(0).getText())) {
                 throw new RuntimeException("Multiple assignment of  " + filsGauche.getChild(0).getText());
             }
-            filsGauche = (CommonTree) (filsGauche.getChild(1));
+            //System.out.println(variables);
+            filsGauche=(CommonTree)(filsGauche.getChild(1));
             gauche++;
-        } while (filsGauche.getChildCount() != 1);
+        }
 
-        /*
-         * do {
-         * if (!verifVar(filsDroit.getChild(0).getText())) {
-         * throw new RuntimeException("Undefined " + filsGauche.getChild(0).getText());
-         * }
-         * filsGauche=(CommonTree) (filsGauche.getChild(1));
-         * gauche++;
-         * } while (filsGauche.getChildCount()!=1)
-         */
+        // Vérification des valeurs
+        while (filsDroit!=null) {
+            if (filsDroit.getText().equals("Exprs")) {
+                switch (filsDroit.getChild(0).getText()) {
+                    case "Var": {
+                        if (!verifVar(filsDroit.getChild(0).getChild(0).getText())) {
+                            throw new RuntimeException("Undefined variable "+filsDroit.getChild(0).getChild(0).getText());
+                        } 
+                        break;
+                    }
+                    case "FunCall": {
+                        String funName=filsDroit.getChild(0).getChild(0).getText();
+                        if (!verifFun(funName)) {
+                            throw new RuntimeException("Undefined function "+funName);
+                        } else {
+                            verifFunCall((CommonTree)(filsDroit.getChild(0)));
+                            droite+=getFunRetN(funName)-1;
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
 
-        // Existance du fils droit ?
-        /*
-         * if (!verifVar(filsDroit.getText())) {
-         * throw new RuntimeException("Variable " + filsDroit.getText() +
-         * " non définie");
-         * }
-         * // Parcours du fils droit: on compte le nombre de fils
-         * while (filsDroit.getChildCount() != 0) {
-         * filsDroit = (CommonTree) (filsDroit.getChild(0));
-         * if (!verifVar(filsDroit.getText())) {
-         * throw new RuntimeException("Variable " + filsDroit.getText() +
-         * " non définie");
-         * }
-         * droite++;
-         * }
-         * // La sémantique est bonne si on a soit autant de variables à gauche et
-         * // à droite, soit si on a une seule variable à droite
-         * if (gauche == droite || droite == 1) {
-         * } else {
-         * throw new RuntimeException("Variable " + noeud.getChild(0).getText() +
-         * " mal formée");
-         * }
-         */
+                filsDroit=(CommonTree)(filsDroit.getChild(1));
+                droite++;
+            } else {
+                filsDroit=null;
+            }
+        }
+
+        if (gauche == droite || droite==1) {
+
+        } else {
+            throw new RuntimeException("Uneven variable assignment: "+gauche+" := "+droite);
+        }
     }
 }

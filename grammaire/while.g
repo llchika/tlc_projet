@@ -38,6 +38,7 @@ tokens {
 @parser::header {
     package src.lp;
 }
+
 axiome: program ;
 
 fragment
@@ -86,7 +87,7 @@ function
     ;
 
 definition
-    : 'read' input? '%' commands '%' 'write' output -> ^(Definition input ^(Output output) ^(Corps commands))
+    : 'read' input? '%' commands '%' 'write' output -> ^(Definition input ^(Corps commands) ^(Output output))
     ;
 
 input
