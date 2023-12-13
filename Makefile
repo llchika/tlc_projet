@@ -34,7 +34,7 @@ $(BUILD_DIR)/src/lp/whileParser.class: $(SOURCE_DIR)/lp/whileParser.java
 
 # Génération du Lexer et du Parser
 $(SOURCE_DIR)/lp/whileLexer.java: $(SOURCE_DIR)/lp/whileParser.java
-$(SOURCE_DIR)/lp/whileParser.java:
+$(SOURCE_DIR)/lp/whileParser.java: ./grammaire/while.g
 	@echo "$(YELLOW)Compiling$(NC) $(GREEN)while.g$(NC)"
 	@java -jar $(ANTLRPATH) -o src/lp grammaire/while.g
 	@mv src/lp/grammaire/* src/lp/

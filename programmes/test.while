@@ -1,1 +1,6 @@
-a
+function main :
+read A, B, C
+%
+	D:=(list A B C (cons A))
+%
+write D
