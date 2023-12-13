@@ -1,19 +1,22 @@
 # Projet: Théorie des langages et compilation
 Projet réalisé dans le cadre du module « Théorie des langages et compilation ».
-
-Création d'un compilateur (pas encore) pour une variante du langage While, en utilisant antlr 3.5 et Java.
+Il contient un compilateur pour une variante du langage While.
 
 ## Structure du projet
 Le projet est structuré ainsi:
 ```c
 .
-├── grammaire // Grammaire du langage
+├── backend                 // Bibliothèque native (C++)
+├── grammaire               // Grammaire de While (ANTLR)
 │   ├── antlr.jar
 │   └── while.g
 ├── Makefile
-├── programmes // Programmes écrit en While
+├── programmes              // Exemples de programmes While
 ├── README.md
-└── src // Fichiers sources
+└── src                     // Travail sur l'AST (Java)
+    ├── adresses            // Traduction vers code 3 adresses
+    ├── Compilator.java     // Main
+    └── verif               // Analyse sémantique
 ```
 
 ## Compilation
