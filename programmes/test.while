@@ -1,6 +1,15 @@
-function main :
+function vache :
 read A, B, C
 %
-	D:=(list A B C (cons A))
+	Z:=A;
+	Y:=B;
+	X:=C
+%
+write Z, Y
+
+function main :
+read M, N, O
+%
+	D, E:=(vache M N O)
 %
 write D

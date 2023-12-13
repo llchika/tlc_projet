@@ -22,27 +22,45 @@ public class Verificator {
     public static boolean execute(CommonTree noeud) {
         try {
             if (noeud.getText()==null) { // S'il y a plusieurs fonctions déclarées, la racine de l'arbre vaut null
-                boolean mainFound=false;
+                int mainFound=0;
                 for (int i=0; i<noeud.getChildCount(); i++) { // On parcourt les fonctions
                     if (noeud.getChild(i).getText()=="Function") {
                         if (noeud.getChild(i).getChild(0).getText().equals("main")) {
-                            mainFound=true;
+                            mainFound++;
                         }
                     } else {
                         throw new RuntimeException("Instruction out of function");
                     }
                 }
-                if (!mainFound) {
+                if (mainFound==1) { // Début du parcours de l'arbre, on sait qu'on a que des fonctions ici
+                    for (int i=0; i<noeud.getChildCount(); i++) {
+                        variables=new ArrayList<String>(); // Remise à 0 du contexte
+                        parcourir((CommonTree)(noeud.getChild(i))); // Le programme s'arrête là s'il y a une erreur
+                        
+                        String funName=noeud.getChild(i).getChild(0).getText();
+
+                        if (funName.equals("main")) { // Tout le code en dessous du main ne sera jamais executé, inutile de le vérifier
+                            break;
+                        } else { // Sinon on ajoute aux fonctions connues
+                            int argsN=noeud.getChild(i).getChild(1).getChild(0).getChildCount(); // Nombre d'arguments de la fonction
+                            int retN=noeud.getChild(i).getChild(1).getChild(2).getChildCount(); // Nombre de valeur de retour
+
+                            putFun(funName, retN, argsN);
+                        }
+                    }
+                } else if (mainFound>1) {
+                    throw new RuntimeException("main function redefinition");
+                } else {
                     throw new RuntimeException("main not found");
                 }
             } else if (noeud.getText().equals("Function")) {
                 if (!noeud.getChild(0).getText().equals("main")) {
                     throw new RuntimeException("main not found");
                 }
+                parcourir(noeud); // Parcours de l'arbre
             } else {
                 throw new RuntimeException("unknown problem");
             }
-            parcourir(noeud); // Pas de problème, on commence le parcours de l'arbre
         } catch (RuntimeException e) {
             e.printStackTrace();
             return false;
