@@ -1,13 +1,6 @@
-function fonct2 :
-read B, C, D
+function fonct :
+read A
 %
-if D then
-	C,Y:=D,C;
-	C:=(cons nil);
-	D:=(list A B C)
-fi;
-for A do
-	L:=B
-od
+	C:=A
 %
-write A, C
+write C

@@ -8,6 +8,7 @@ import org.antlr.runtime.tree.CommonTree;
 public class Verificator {
     // Stockage des variables définies dans le programme
     private static ArrayList<String> variables = new ArrayList<String>();
+    private static ArrayList<Pair<String, Integer>> functions = new ArrayList<Pair<String, Integer>>();
 
     // Execution de la procédure de vérification à partir du noeud noeud
     public static boolean execute(CommonTree noeud) {
