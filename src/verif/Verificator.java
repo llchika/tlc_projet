@@ -140,62 +140,6 @@ public class Verificator {
             }
         }
     }
-    // Vérification d'un noeud If
-    /*private static void verifIf(CommonTree noeud) throws RuntimeException {
-                                        
-                                        //TODO A REFAIRE QUAND ON AURA "NOP A" en condition
-                                        //Vérification de la condition
-                                        CommonTree condition = (CommonTree)noeud.getChild(0);   // noeud Condition
-                                        condition=condition.getChild(0);    //noeud Var
-                                        //On verifie si la fonction et la variable sont bien definies
-                                        for (int i = 0; i < condition.getChildCount(); i++) { //On peut avoir not A   par exemple avec not une fct
-                                        if (!verifVar(condition.getChild(i).getText())) {
-                                                throw new RuntimeException("Variable " + condition.getChild(i).getText() + " non définie");
-                                            }
-                                        }
-
-        //Vérification Then
-        CommonTree action = (CommonTree)noeud.getChild(1);// Then
-        putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
-        parcourir(action); //La on parcours dans then comme si on avait un bloc normal je pense
-       
-        //Suppression d'une sous-couche jusqu'à ////
-        while(true){
-            String check=variables.getLast();
-            variables.remove(variables.size()-1);
-            if(check.equals("////")){
-                break;
-            }
-        }
-
-    }*/
-
-    /*// Vérification d'un noeud For
-    private static void verifFor(CommonTree noeud) throws RuntimeException {
-                                        
-        //Vérification de la boucle Je crois qu'on a que une operande dans le For A (voir fin specification) ou aussi une fonction ? 
-        CommonTree boucle = (CommonTree)noeud.getChild(0);   // noeud Var
-        boucle=boucle.getChild(0);    //noeud operande
-        //On verifie si la variable sont bien definies
-        if (!verifVar(boucle.getText())) {
-            throw new RuntimeException("Variable " + boucle.getText() + " non définie");
-        }
-        
-        //Vérification Then. Je crois que c'est comme pour le if ?
-        CommonTree action = (CommonTree)noeud.getChild(1);// Then
-        putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
-        parcourir(action); //La on parcours dans then comme si on avait un bloc normal je pense
-       
-        //Suppression d'une sous-couche jusqu'à ////
-        while(true){
-            String check=variables.getLast();
-            variables.remove(variables.size()-1);
-            if(check.equals("////")){
-                break;
-            }
-        }
-
-    }  */ 
 
     private static void verifFunCall(CommonTree noeud) throws RuntimeException {
         String funName=noeud.getChild(0).getText(); // nom de la fonction
