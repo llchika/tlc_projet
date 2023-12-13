@@ -1,6 +1,7 @@
-package verif;
+package src.verif;
 
 import java.util.ArrayList;
+import src.utils.Pair;
 
 import org.antlr.runtime.tree.CommonTree;
 
@@ -35,14 +36,6 @@ public class Verificator {
         else if (noeud.getText().equals("Output")) {
             verifOutput(noeud);
         }
-        // Cas ou le noeud est un if
-        else if (noeud.getText().equals("If")) {
-            verifIf(noeud);
-        }
-        // Cas ou le noeud est un for
-        else if (noeud.getText().equals("For")) {
-            verifFor(noeud);
-        }
         // Et puis sinon on parcour les enfants du noeud
         else {
             for (int i = 0; i < noeud.getChildCount(); i++) {
@@ -57,12 +50,17 @@ public class Verificator {
     }
 
     // Ajout du nom de la variable aux variables existantes
-    private static void putVar(String varName) {
-        variables.add(varName);
+    private static boolean putVar(String varName) {
+        System.out.println(varName);
+        if (!verifVar(varName)) { // Si la variable n'est pas déjà dedans
+            variables.add(varName);
+            return true;
+        }
+        return false;
     }
 
     // Vérification d'un noeud Input
-    private static void verifInput(CommonTree noeud) throws RuntimeException {
+    private static void verifInput(CommonTree noeud) {
         for (int i = 0; i < noeud.getChildCount(); i++) {
             putVar(noeud.getChild(i).getText());
         }
@@ -77,7 +75,7 @@ public class Verificator {
         }
     }
     // Vérification d'un noeud If
-    private static void verifIf(CommonTree noeud) throws RuntimeException {
+    /*private static void verifIf(CommonTree noeud) throws RuntimeException {
                                         
                                         //TODO A REFAIRE QUAND ON AURA "NOP A" en condition
                                         //Vérification de la condition
@@ -104,9 +102,9 @@ public class Verificator {
             }
         }
 
-    }
+    }*/
 
-    // Vérification d'un noeud For
+    /*// Vérification d'un noeud For
     private static void verifFor(CommonTree noeud) throws RuntimeException {
                                         
         //Vérification de la boucle Je crois qu'on a que une operande dans le For A (voir fin specification) ou aussi une fonction ? 
@@ -131,26 +129,33 @@ public class Verificator {
             }
         }
 
-    }    
-    // Vérificaiton d'un noeud Input
+    }  */ 
+
     private static void verifSet(CommonTree noeud) throws RuntimeException {
         // Variables pour vérifier si la sémantique est bonne
-        int gauche = 0, droite = 1;
-        // Fils du noeud
-        CommonTree filsGauche = noeud;
-        CommonTree filsDroit = (CommonTree) (noeud.getChild(1));
+        int gauche=0, droite=0;
+        CommonTree filsGauche=(CommonTree)(noeud.getChild(0)); // À gauche du égal
+        CommonTree filsDroit=(CommonTree)(noeud.getChild(1)); // À droite du égal
 
         // Parcours du fils gauche: on les comptes et on ajoute les nouvelles variables
-        while (filsGauche.getChildCount() != 0) {
-            filsGauche = (CommonTree) (filsGauche.getChild(0));
-            if (!verifVar(filsGauche.getText())) {
-                variables.add(filsGauche.getText());
+        do {
+            if (!putVar(filsGauche.getChild(0).getText())) {
+                throw new RuntimeException("Multiple assignment of  " + filsGauche.getChild(0).getText());
             }
+            filsGauche=(CommonTree) (filsGauche.getChild(1));
             gauche++;
-        }
+        } while (filsGauche.getChildCount()!=1);
+
+        /*do {
+            if (!verifVar(filsDroit.getChild(0).getText())) {
+                throw new RuntimeException("Undefined " + filsGauche.getChild(0).getText());
+            }
+            filsGauche=(CommonTree) (filsGauche.getChild(1));
+            gauche++;
+        } while (filsGauche.getChildCount()!=1)*/
 
         // Existance du fils droit ?
-        if (!verifVar(filsDroit.getText())) {
+        /*if (!verifVar(filsDroit.getText())) {
             throw new RuntimeException("Variable " + filsDroit.getText() + " non définie");
         }
         // Parcours du fils droit: on compte le nombre de fils
@@ -166,6 +171,6 @@ public class Verificator {
         if (gauche == droite || droite == 1) {
         } else {
             throw new RuntimeException("Variable " + noeud.getChild(0).getText() + " mal formée");
-        }
+        }*/
     }
 }

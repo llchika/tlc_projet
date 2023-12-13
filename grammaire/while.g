@@ -32,11 +32,11 @@ tokens {
 
 
 @lexer::header {
-    package lp;
+    package src.lp;
 }
 
 @parser::header {
-    package lp;
+    package src.lp;
 }
 axiome: program ;
 

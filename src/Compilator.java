@@ -1,12 +1,14 @@
+package src;
+
 import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 
-import lp.whileLexer;
-import lp.whileParser;
+import src.lp.whileLexer;
+import src.lp.whileParser;
 
-import verif.Verificator;
-import adresses.Generator;
+import src.verif.Verificator;
+import src.adresses.Generator;
 
 import java.io.File;
 
