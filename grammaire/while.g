@@ -27,6 +27,7 @@ tokens {
     ForEach;
     Nop;
     Symbol;
+    Equals;
 }
 
 
@@ -133,7 +134,7 @@ exprBase
     ;
 
 expression
-    : exprBase   ('=?' exprBase)? -> exprBase exprBase?
+    : exprBase ('=?' exprBase -> ^(Equals exprBase exprBase) | -> exprBase)
     ;
 
 lExpr
