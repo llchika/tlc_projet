@@ -43,6 +43,13 @@ tokens {
     Nil;
     Args;
     Exprs;
+    If;
+    Else;
+    Then;
+    Condition;
+    While;
+    For;
+    ForEach;
 }
 
 
@@ -131,16 +138,16 @@ exprs
 command
     : 'nop' -> ^(NOP)
     | vars ':=' exprs -> ^(Set vars exprs)
-    | 'if' expression 'then' commands ('else' commands)? 'fi' -> ^(IF expression commands commands?)
-    | 'while' expression 'do' commands 'od' -> ^(WHILE expression commands)
-    | 'for' expression 'do' commands 'od' -> ^(FOR expression commands)
-    | 'foreach' VARIABLE 'in' expression 'do' commands 'od' -> ^(FOREACH VARIABLE expression commands)
+    | 'if' expression 'then' commands ('else' commands)? 'fi' -> ^(If ^(Condition expression) ^(Then commands)  ^(Else commands)?)
+    | 'while' expression 'do' commands 'od' -> ^(While expression ^(Then commands))
+    | 'for' expression 'do' commands 'od' -> ^(For expression ^(Then commands))
+    | 'foreach' VARIABLE 'in' expression 'do' commands 'od' -> ^(ForEach VARIABLE expression ^(Then commands))
     ;
 
 exprBase
     : 'nil' -> ^(Nil)
     | VARIABLE -> ^(Var VARIABLE)
-    | SYMBOL -> ^(SYMBOL SYMBOL)
+    | SYMBOL -> ^(SYMBOL SYMBOL) // May be useless
     | '(' 'cons' lExpr? ')' -> ^(FunCall 'cons' ^(Args lExpr?))
     | '(' 'list' lExpr ')' -> ^(FunCall 'list' ^(Args lExpr))
     | '(' 'hd' exprBase ')' -> ^(FunCall 'hd' ^(Args exprBase))

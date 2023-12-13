@@ -1,18 +1,12 @@
-function fonct :
-read B, C, D
-%
-A,B := B, C, D;
-K := (cons nil Z),T;
-L := (list A B C D)
-%
-write A, C
-
 function fonct2 :
 read B, C, D
 %
-A:=(list A B C);
-B:=(hd A);
-C:=(tl A);
-D:=(test A)
+if A?=B then
+	C:=(cons nil);
+	D:=(list A B C)
+fi;
+for A do
+	L:=B
+od
 %
 write A, C
