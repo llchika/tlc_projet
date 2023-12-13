@@ -25,7 +25,8 @@ tokens {
     While;
     For;
     ForEach;
-    NOP;
+    Nop;
+    Symbol;
 }
 
 
@@ -112,7 +113,7 @@ exprs
     ;
     
 command
-    : 'nop' -> ^(NOP)
+    : 'nop' -> ^(Nop)
     | vars ':=' exprs -> ^(Set vars exprs)
     | 'if' expression 'then' commands ('else' commands)? 'fi' -> ^(If ^(Condition expression) ^(Then commands)  ^(Else commands)?)
     | 'while' expression 'do' commands 'od' -> ^(While expression ^(Then commands))
@@ -123,7 +124,7 @@ command
 exprBase
     : 'nil' -> ^(Nil)
     | VARIABLE -> ^(Var VARIABLE)
-    | SYMBOL -> ^(SYMBOL SYMBOL) // May be useless
+    | SYMBOL -> ^(Symbol SYMBOL) // May be useless
     | '(' 'cons' lExpr? ')' -> ^(FunCall 'cons' ^(Args lExpr?))
     | '(' 'list' lExpr ')' -> ^(FunCall 'list' ^(Args lExpr))
     | '(' 'hd' exprBase ')' -> ^(FunCall 'hd' ^(Args exprBase))
