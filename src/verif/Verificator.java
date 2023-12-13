@@ -15,7 +15,8 @@ public class Verificator {
         new Triplet<>("cons", 1, -1),
         new Triplet<>("list", 1, -1),
         new Triplet<>("hd", 1, 1),
-        new Triplet<>("tl", 1, 1)
+        new Triplet<>("tl", 1, 1),
+        new Triplet<>("not", 1, 1)
     ));
 
     // Execution de la procédure de vérification à partir du noeud noeud
@@ -42,9 +43,14 @@ public class Verificator {
                         if (funName.equals("main")) { // Tout le code en dessous du main ne sera jamais executé, inutile de le vérifier
                             break;
                         } else { // Sinon on ajoute aux fonctions connues
-                            int argsN=noeud.getChild(i).getChild(1).getChild(0).getChildCount(); // Nombre d'arguments de la fonction
-                            int retN=noeud.getChild(i).getChild(1).getChild(2).getChildCount(); // Nombre de valeur de retour
-
+                            int argsN, retN;
+                            if (noeud.getChild(i).getChild(1).getChildCount()==3) { // S'il y a des variables en entrée
+                                argsN=noeud.getChild(i).getChild(1).getChild(0).getChildCount();
+                                retN=noeud.getChild(i).getChild(1).getChild(2).getChildCount();
+                            } else {
+                                argsN=0;
+                                retN=noeud.getChild(i).getChild(1).getChild(1).getChildCount();
+                            }
                             putFun(funName, retN, argsN);
                         }
                     }
@@ -70,6 +76,10 @@ public class Verificator {
 
     // Parcours de noeuf
     private static void parcourir(CommonTree noeud) {
+        //System.out.println(noeud.getText());
+        /*
+         * /!\ Ne pas remplacer par un switch case, pas convaincu que Java va savoir utiliser le bon == /!\
+         */
         if (noeud.getText()==null) {
 
         }
@@ -84,6 +94,15 @@ public class Verificator {
         // Cas ou le noeud est un output
         else if (noeud.getText().equals("Output")) {
             verifOutput(noeud);
+        } 
+        else if (noeud.getText().equals("If")) {
+            verifIf(noeud);
+        }
+        else if (noeud.getText().equals("For")) {
+            verifForWhile(noeud);
+        }
+        else if (noeud.getText().equals("While")) {
+            verifForWhile(noeud);
         }
         // Et puis sinon on parcour les enfants du noeud
         else {
@@ -202,19 +221,6 @@ public class Verificator {
 
         ArrayList<String> variablesVues=new ArrayList<>();
 
-        // Création des variables
-        while (filsGauche!=null) {
-            if (!variablesVues.contains(filsGauche.getChild(0).getText())) {
-                variablesVues.add(filsGauche.getChild(0).getText());
-                putVar(filsGauche.getChild(0).getText());
-            } else {
-                throw new RuntimeException("Multiple assignment of  " + filsGauche.getChild(0).getText());
-            }
-            //System.out.println(variables);
-            filsGauche=(CommonTree)(filsGauche.getChild(1));
-            gauche++;
-        }
-
         // Vérification des valeurs
         while (filsDroit!=null) {
             if (filsDroit.getText().equals("Exprs")) {
@@ -246,10 +252,74 @@ public class Verificator {
             }
         }
 
+        // Création des variables
+        while (filsGauche!=null) {
+            if (!variablesVues.contains(filsGauche.getChild(0).getText())) {
+                variablesVues.add(filsGauche.getChild(0).getText());
+                putVar(filsGauche.getChild(0).getText());
+            } else {
+                throw new RuntimeException("Multiple assignment of  " + filsGauche.getChild(0).getText());
+            }
+            //System.out.println(variables);
+            filsGauche=(CommonTree)(filsGauche.getChild(1));
+            gauche++;
+        }
+
         if (gauche == droite || droite==1) {
 
         } else {
             throw new RuntimeException("Uneven variable assignment: "+gauche+" := "+droite);
         }
+    }
+
+    private static void verifIf(CommonTree noeud) throws RuntimeException {
+        CommonTree condition=(CommonTree)(noeud.getChild(0).getChild(0));   // noeud Condition
+        if(condition.getText().equals("Var")) {
+            System.out.println(condition.getChild(0).getText());
+            if (!verifVar(condition.getChild(0).getText())) {
+                throw new RuntimeException("Undefined variable "+condition.getChild(0).getText());
+             }
+
+        }
+        else if(condition.getText().equals("FunCall")) {
+            verifFunCall(condition);
+        }
+        // Condition ok
+
+        for (int i=1; i<noeud.getChildCount(); i++) { // Au moins un Then, peut être un Else
+            variables.add(null); // Créaction du contexte
+
+            parcourir((CommonTree)(noeud.getChild(i)));
+
+            String tmp;
+            do {
+                tmp=variables.get(variables.size()-1);
+                variables.remove(variables.size()-1);
+            } while (tmp!=null);
+        }
+    }
+
+
+    private static void verifForWhile(CommonTree noeud) throws RuntimeException {
+        CommonTree forWhile=(CommonTree)(noeud.getChild(0));   // noeud For ou While
+        if(forWhile.getText().equals("Var")) {
+            if (!verifVar(forWhile.getChild(0).getText())) {
+                throw new RuntimeException("Undefined variable "+forWhile.getChild(0).getText());
+             }
+
+        }
+        else if(forWhile.getText().equals("FunCall")) {
+            verifFunCall(forWhile);
+        }
+        // forWhile ok
+
+        variables.add(null); // Créaction du contexte
+        parcourir((CommonTree)(noeud.getChild(1)));
+
+        String tmp;
+        do {
+            tmp=variables.get(variables.size()-1);
+            variables.remove(variables.size()-1);
+        } while (tmp!=null);
     }
 }

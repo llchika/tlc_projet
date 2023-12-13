@@ -1,16 +1,35 @@
-function vache :
-read A, B, C
+/*function vache :
+read A, B, C, E, F
 %
 	Z:=A;
-	Z:=B;
-	Y:=B;
-	X:=C
+	Y:=C;
+	if (not B) then
+		P:=C;
+		Z:=B
+	else
+		if (not C) then
+			K:=A;
+			K:=A
+		else
+			A:=A
+		fi;
+		P:=C
+	fi
 %
-write Z, Y
+write Z, Y, F, E*/
+
+function lewhilefor :
+read Op2
+%
+	while Op2 do
+		Result := ( cons nil Op2 )
+	od
+%
+write Op2
 
 function main :
 read M, N, O
 %
-	D, E:=(vache M N O)
+	D, E, K, L:=(list M N O N N)
 %
 write D

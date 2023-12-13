@@ -22,4 +22,9 @@ public class Triplet<K, V> {
     public V getValue2() {
         return value2;
     }
+
+    @Override
+    public String toString() {
+        return this.key+":"+this.value1+"+"+this.value2;
+    }
 }
