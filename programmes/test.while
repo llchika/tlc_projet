@@ -1,7 +1,8 @@
 function fonct2 :
 read B, C, D
 %
-if A?=B then
+if A? then
+	C,Y:=D,C;
 	C:=(cons nil);
 	D:=(list A B C)
 fi;
