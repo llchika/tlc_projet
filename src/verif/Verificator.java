@@ -231,7 +231,66 @@ public class Verificator {
                 }
         }
     }
+// Vérification d'un noeud If
+    private static void verifIf(CommonTree noeud) throws RuntimeException {
+        //Condition
+        CommonTree condition = (CommonTree)noeud.getChild(0);   // noeud Condition
+        condition=(CommonTree)condition.getChild(0);// noeud fonctioncall ou var
+        //Cas ou c'est une simple var ! 
+        if(condition.getText().equals("Var")){
+            if (!verifVar(condition.getChild(0).getText())) {
+                throw new RuntimeException("Variable " + condition.getChild(0).getText() + " non définie");
+             }
 
+        }
+        else if(condition.getText().equals("FunCall")){
+            verifFunctionCall(condition);
+        }
+
+        //Vérification Then
+        CommonTree action = (CommonTree)noeud.getChild(1);// Then
+        putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
+        for (int i = 0; i < action.getChildCount(); i++) {
+            parcourir(action.getChild(i)); 
+        }
+        
+        //Suppression d'une sous-couche jusqu'à ////
+        while(true){
+            String check=variables.getLast();
+            variables.remove(variables.size()-1);
+            if(check.equals("////")){
+                break;
+            }
+        }
+
+    }
+
+    // Vérification d'un noeud For
+    private static void verifFor(CommonTree noeud) throws RuntimeException {
+      
+      CommonTree boucle = (CommonTree)noeud.getChild(0); // imaginons Var car flemme de fonction pr l'instant
+      boucle=boucle.getChild(0); //la variable
+      //On verifie si la variable est bien definie
+      if (!verifVar(boucle.getText())) {
+      throw new RuntimeException("Variable " + boucle.getText() + " non définie");
+      }
+      
+      //Vérification Then. 
+      CommonTree action = (CommonTree)noeud.getChild(1);// Then
+      putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
+       for (int i = 0; i < action.getChildCount(); i++) {
+            parcourir(action.getChild(i)); 
+        }
+      
+      //Suppression d'une sous-couche jusqu'à ////
+      while(true){
+      String check=variables.getLast();
+      variables.remove(variables.size()-1);
+      if(check.equals("////")){
+      break;
+      }
+      }
+      }
     private static void verifSet(CommonTree noeud) throws RuntimeException {
         // Variables pour vérifier si la sémantique est bonne
         int gauche = 0, droite = 0;
