@@ -1,6 +1,36 @@
-function main :
-read A, B, C
+/*function vache :
+read A, B, C, E, F
 %
-	D:=(list A B C (cons A))
+	Z:=A;
+	Y:=C;
+	if (not B) then
+		P:=C;
+		Z:=B
+	else
+		if (not C) then
+			K:=A;
+			K:=A
+		else
+			A:=A
+		fi;
+		P:=C
+	fi
+%
+write Z, Y, F, E*/
+
+function lewhilefor :
+read Op2
+%
+	foreach C in Op2 
+	do
+		A:=(cons C)
+	od
+%
+write Op2
+
+function main :
+read M, N, O
+%
+	D, E, K, L:=(list M N O N N)
 %
 write D

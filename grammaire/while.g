@@ -87,7 +87,7 @@ function
     ;
 
 definition
-    : 'read' input? '%' commands '%' 'write' output -> ^(Definition input ^(Corps commands) ^(Output output))
+    : 'read' input? '%' commands '%' 'write' output -> ^(Definition input? ^(Corps commands) ^(Output output))
     ;
 
 input

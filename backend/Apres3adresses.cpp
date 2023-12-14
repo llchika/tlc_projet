@@ -11,9 +11,9 @@ struct TreeNode {
 
 
 //Code 3 adresses:   r0= cons call T
-//                   r0= cons call T1 T2 avce T1 gauche et T2 droite
+//                   r0= cons call T1 T2 avec T1 fils gauche et T2 fils droit
 // ca suffit d'avoir left et right car bah ils auront déja été crée en fait ! 
-//Ya pas de value je crois ? 
+
 TreeNode* cons(TreeNode* left, TreeNode* right) {
     TreeNode* arbre=new TreeNode();
     (*arbre).left=left;//On colle l'arbre gauche
@@ -25,4 +25,15 @@ TreeNode* cons(TreeNode* left, TreeNode* right) {
 TreeNode* list(TreeNode* left,TreeNode* right) {
     return cons(left,right);
 }
+//not
+
+
+
+//Mawa je te laisse faire ca, c'est presque list je crois 
+//Hd
+
+//tl
+
+
+
 

@@ -55,4 +55,5 @@ clean:
 	@echo "$(RED)Cleaning$(NC) $(GREEN)project$(NC)"
 	@rm -fr build
 	@rm -fr src/lp
+	@rm -fr grammaire/output
 	@find . -name *.class -exec rm {} \;
