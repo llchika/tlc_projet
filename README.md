@@ -1,5 +1,5 @@
 # Projet: Théorie des langages et compilation
-Projet réalisé dans le cadre du module « Théorie des langages et compilation ».
+Projet réalisé dans le cadre du module « Théorie des langages et compilation ».<br>
 Il contient un compilateur pour une variante du langage While.
 
 ## Structure du projet
