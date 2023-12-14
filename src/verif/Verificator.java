@@ -32,21 +32,14 @@ public class Verificator {
      */
     public static boolean execute(CommonTree noeud) {
         try {
-<<<<<<< HEAD
-            if (noeud.getText() == null) { // S'il y a plusieurs fonctions déclarées, la racine de l'arbre vaut null
-                boolean mainFound = false;
-                for (int i = 0; i < noeud.getChildCount(); i++) { // On parcourt les fonctions
-                    if (noeud.getChild(i).getText() == "Function") {
-                        if (noeud.getChild(i).getChild(0).getText().equals("main")) {
-                            mainFound = true;
-=======
             if (noeud.getText()==null) { // S'il y a plusieurs fonctions déclarées, la racine de l'arbre vaut null
                 int mainFound=0;
-                for (int i=0; i<noeud.getChildCount(); i++) { // On parcourt les fonctions
-                    if (noeud.getChild(i).getText()=="Function") {
-                        if (noeud.getChild(i).getChild(0).getText().equals("main")) { // On s'ssure qu'il n'y a qu'un main dans le programme
+                for (int i=0; i<noeud.getChildCount(); i++) { // On parcourt les différentes fonctions
+                    CommonTree noeudFonction = (CommonTree) noeud.getChild(i);
+                    if (noeudFonction.getText()=="Function") {
+                         CommonTree FonctionName= (CommonTree) noeudFonction.getChild(0);//noeud Nom de la fonction
+                        if (FonctionName.getText().equals("main")) { // On s'ssure qu'il n'y a qu'un main dans le programme
                             mainFound++;
->>>>>>> f74b2199fce25b40d84acdd327694679ded3d350
                         }
                     } else {
                         throw new RuntimeException("Instruction out of function");
@@ -54,29 +47,30 @@ public class Verificator {
                 }
                 if (mainFound==1) { // Début du parcours de l'arbre, on sait qu'on a que des fonctions ici
                     for (int i=0; i<noeud.getChildCount(); i++) {
-                        variables=new ArrayList<String>(); // Remise à 0 du contexte
-                        parcourir((CommonTree)(noeud.getChild(i))); // On parcourt l'arbre d'une fonction
+                        variables=new ArrayList<String>(); // Remise à 0 du contexte pour chaque fonction
+                        CommonTree noeudFunction=(CommonTree)(noeud.getChild(i));//Noeud fonction
+                        parcourir(noeudFunction); // On parcourt l'arbre d'une fonction
                         // S'il y a une erreur, l'analyse se sera arrêtée avant d'arriver ici
                         
-                        String funName=noeud.getChild(i).getChild(0).getText();
+                        String funName=noeudFunction.getChild(0).getText();
 
                         if (funName.equals("main")) { // Tout le code en dessous du main ne sera jamais executé, inutile de le vérifier
                             break;
                         } else { // Sinon on ajoute aux fonctions connues
                             int argsN, retN;
                             if (noeud.getChild(i).getChild(1).getChildCount()==3) { // S'il y a des variables en entrée
-                                argsN=noeud.getChild(i).getChild(1).getChild(0).getChildCount();
-                                retN=noeud.getChild(i).getChild(1).getChild(2).getChildCount();
+                                argsN=noeudFunction.getChild(1).getChild(0).getChildCount();
+                                retN=noeudFunction.getChild(1).getChild(2).getChildCount();
                             } else {
                                 argsN=0;
-                                retN=noeud.getChild(i).getChild(1).getChild(1).getChildCount();
+                                retN=noeudFunction.getChild(1).getChild(1).getChildCount();
                             }
-                            putFun(funName, retN, argsN);
+                            putFun(funName, retN, argsN);//Ajout de la fonction 
                         }
                     }
-                } else if (mainFound>1) {
+                } else if (mainFound>1) {//Si plusieurs main, c'est un probleme
                     throw new RuntimeException("main function redefinition");
-                } else {
+                } else {//Si aucun, c'est un probleme
                     throw new RuntimeException("main not found");
                 }
             } else if (noeud.getText().equals("Function")) { // S'il n'y a qu'une fonction dans le programme, vaut Function
@@ -99,14 +93,10 @@ public class Verificator {
      * @param noeud: Noeud à analyser...
      */
     private static void parcourir(CommonTree noeud) {
-<<<<<<< HEAD
-        if (noeud.getText() == null) {
-=======
         /*
          * /!\ Ne pas remplacer par un switch case, pas convaincu que Java va savoir utiliser le bon == /!\
          */
         if (noeud.getText()==null) {
->>>>>>> f74b2199fce25b40d84acdd327694679ded3d350
 
         }
         else if (noeud.getText().equals("Set")) {
@@ -248,62 +238,6 @@ public class Verificator {
             }
         }
     }
-    // Vérification d'un noeud If
-    /*private static void verifIf(CommonTree noeud) throws RuntimeException {
-                                        
-                                        //TODO A REFAIRE QUAND ON AURA "NOP A" en condition
-                                        //Vérification de la condition
-                                        CommonTree condition = (CommonTree)noeud.getChild(0);   // noeud Condition
-                                        condition=condition.getChild(0);    //noeud Var
-                                        //On verifie si la fonction et la variable sont bien definies
-                                        for (int i = 0; i < condition.getChildCount(); i++) { //On peut avoir not A   par exemple avec not une fct
-                                        if (!verifVar(condition.getChild(i).getText())) {
-                                                throw new RuntimeException("Variable " + condition.getChild(i).getText() + " non définie");
-                                            }
-                                        }
-
-        //Vérification Then
-        CommonTree action = (CommonTree)noeud.getChild(1);// Then
-        putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
-        parcourir(action); //La on parcours dans then comme si on avait un bloc normal je pense
-       
-        //Suppression d'une sous-couche jusqu'à ////
-        while(true){
-            String check=variables.getLast();
-            variables.remove(variables.size()-1);
-            if(check.equals("////")){
-                break;
-            }
-        }
-
-    }*/
-
-    /*// Vérification d'un noeud For
-    private static void verifFor(CommonTree noeud) throws RuntimeException {
-                                        
-        //Vérification de la boucle Je crois qu'on a que une operande dans le For A (voir fin specification) ou aussi une fonction ? 
-        CommonTree boucle = (CommonTree)noeud.getChild(0);   // noeud Var
-        boucle=boucle.getChild(0);    //noeud operande
-        //On verifie si la variable sont bien definies
-        if (!verifVar(boucle.getText())) {
-            throw new RuntimeException("Variable " + boucle.getText() + " non définie");
-        }
-        
-        //Vérification Then. Je crois que c'est comme pour le if ?
-        CommonTree action = (CommonTree)noeud.getChild(1);// Then
-        putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
-        parcourir(action); //La on parcours dans then comme si on avait un bloc normal je pense
-       
-        //Suppression d'une sous-couche jusqu'à ////
-        while(true){
-            String check=variables.getLast();
-            variables.remove(variables.size()-1);
-            if(check.equals("////")){
-                break;
-            }
-        }
-
-    }  */ 
 
     /**
      * Vérification d'un arbre correspondand à un FunCall
@@ -319,6 +253,7 @@ public class Verificator {
         }
 
         // Arguments
+        //On verifie si on a le bon nombre d'arguments
         CommonTree args=(CommonTree)(noeud.getChild(1));// Noeud Args
         int tmp=getFunArgsN(funName); // Nombre de paramètres
         if (tmp!=-1) { // -1 <=> Plusieurs paramètres ok
@@ -326,21 +261,22 @@ public class Verificator {
                 throw new RuntimeException("Wrong number of argument in "+funName+" call. "+args.getChildCount()+"/"+tmp+ " (g/e)");
             }
         }
-
+        //On verifie si ils existent 
         for (int i=0; i<args.getChildCount(); i++) { // Vérifie que les paramètres sont valides
-            switch (args.getChild(i).getText()) {
+            CommonTree noeudType=(CommonTree)args.getChild(i);
+            switch (noeudType.getText()) {
                     case "Var": {
-                        if (!verifVar(args.getChild(i).getChild(0).getText())) {
-                            throw new RuntimeException("Undefined variable "+args.getChild(i).getChild(0).getText());
+                        if (!verifVar(noeudType.getChild(0).getText())) {
+                            throw new RuntimeException("Undefined variable "+noeudType.getChild(0).getText());
                         } 
                         break;
                     }
                     case "FunCall": {
-                        String funNamet=args.getChild(i).getChild(0).getText();
+                        String funNamet=noeudType.getChild(0).getText();
                         if (!verifFun(funNamet)) {
                             throw new RuntimeException("Undefined function "+funNamet);
                         }
-                        verifFunCall((CommonTree)(args.getChild(i)));
+                        verifFunCall((CommonTree)(noeudType));
                         break;
                     }
                     default:
@@ -348,68 +284,7 @@ public class Verificator {
                 }
         }
     }
-// Vérification d'un noeud If
-    private static void verifIf(CommonTree noeud) throws RuntimeException {
-        //Condition
-        CommonTree condition = (CommonTree)noeud.getChild(0);   // noeud Condition
-        condition=(CommonTree)condition.getChild(0);// noeud fonctioncall ou var
-        //Cas ou c'est une simple var ! 
-        if(condition.getText().equals("Var")){
-            if (!verifVar(condition.getChild(0).getText())) {
-                throw new RuntimeException("Variable " + condition.getChild(0).getText() + " non définie");
-             }
 
-<<<<<<< HEAD
-        }
-        else if(condition.getText().equals("FunCall")){
-            verifFunctionCall(condition);
-        }
-
-        //Vérification Then
-        CommonTree action = (CommonTree)noeud.getChild(1);// Then
-        putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
-        for (int i = 0; i < action.getChildCount(); i++) {
-            parcourir(action.getChild(i)); 
-        }
-        
-        //Suppression d'une sous-couche jusqu'à ////
-        while(true){
-            String check=variables.getLast();
-            variables.remove(variables.size()-1);
-            if(check.equals("////")){
-                break;
-            }
-        }
-
-    }
-
-    // Vérification d'un noeud For
-    private static void verifFor(CommonTree noeud) throws RuntimeException {
-      
-      CommonTree boucle = (CommonTree)noeud.getChild(0); // imaginons Var car flemme de fonction pr l'instant
-      boucle=boucle.getChild(0); //la variable
-      //On verifie si la variable est bien definie
-      if (!verifVar(boucle.getText())) {
-      throw new RuntimeException("Variable " + boucle.getText() + " non définie");
-      }
-      
-      //Vérification Then. 
-      CommonTree action = (CommonTree)noeud.getChild(1);// Then
-      putVar("////")//Genre c'est le nil qu'on ajoute dans son cours pour séparer les sous blocs ! on enleve ce machin à la fin de la verification de then..
-       for (int i = 0; i < action.getChildCount(); i++) {
-            parcourir(action.getChild(i)); 
-        }
-      
-      //Suppression d'une sous-couche jusqu'à ////
-      while(true){
-      String check=variables.getLast();
-      variables.remove(variables.size()-1);
-      if(check.equals("////")){
-      break;
-      }
-      }
-      }
-=======
     /**
      * Vérification d'un arbre correspondand à un Set
      * Créé par les affectations de variable
@@ -418,12 +293,11 @@ public class Verificator {
      * existent bien.
      * @param noeud: Arbre à vérifier
      */
->>>>>>> f74b2199fce25b40d84acdd327694679ded3d350
     private static void verifSet(CommonTree noeud) throws RuntimeException {
         // Variables pour vérifier si la sémantique est bonne
-        int gauche = 0, droite = 0;
-        CommonTree filsGauche = (CommonTree) (noeud.getChild(0)); // À gauche du égal
-        CommonTree filsDroit = (CommonTree) (noeud.getChild(1)); // À droite du égal
+        int gauche=0, droite=0;
+        CommonTree filsGauche=(CommonTree)(noeud.getChild(0)); // À gauche du égal
+        CommonTree filsDroit=(CommonTree)(noeud.getChild(1)); // À droite du égal
 
         ArrayList<String> variablesVues=new ArrayList<>();
 
@@ -484,7 +358,7 @@ public class Verificator {
      * @param noeud: Arbre à vérifier
      */
     private static void verifIf(CommonTree noeud) throws RuntimeException {
-        CommonTree condition=(CommonTree)(noeud.getChild(0).getChild(0)); // Noeud Condition
+        CommonTree condition=(CommonTree)(noeud.getChild(0).getChild(0)); // Noeud Var ou fonction
         if(condition.getText().equals("Var")) {
             System.out.println(condition.getChild(0).getText());
             if (!verifVar(condition.getChild(0).getText())) {
