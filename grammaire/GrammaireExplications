@@ -1,11 +1,13 @@
 Introduction:
     Ce document décrit la grammaire while ainsi que la structure de l arbre Syntaxique abstrait(AST) pour  le langage WHILE.
-    L AST est une représentation hiérarchique des programmes WHILE aprés l analyse syntaxique.Il est construit à partir
-    de différentes règles de la grammaire. Chaque règle contribue à la construction d un élément spécifique de l AST
+    L AST est une représentation hiérarchique des programmes WHILE aprés l analyse syntaxique. Il est construit à partir
+    de différentes règles de la grammaire. Chacune de ces règles contribue à la construction d un élément spécifique de l AST.
 
 
 Explication des règles principales: 
-    La régle function génère un noeud de l AST qui représente une fonction: 
+    La régle function décrit la syntaxe d'une fonction dans le langage WHILE.
+    Elle spécifie que la fonction commence par le mot-clé function, suivi d'un symbole, deux points,
+    et d'une définition. L AST résultant contient un noeud de type Function possédant son nom et sa definition. 
       function
         : 'function' SYMBOL ':' definition -> ^(Function SYMBOL definition)
         ;
@@ -22,16 +24,28 @@ Explication des règles principales:
 
 
 Tu veux des trucs comme ca  mon petit teddy? 
-         expression
+Exemple d'AST pour l'appel de la fonction main
+            nil
              |
-         __exprBase__
-        /     |      \
-      Nil  Var(A)   Symbol(x)
-        |
-      FunCall
-      /   |   \
-  'cons' Args  lExpr
-           |
-         exprBase
-            |
-           Var(B)
+         Function                                       
+        /     |   
+   main   Definition  
+            /  |      \  
+        Input  corps    Output
+        / /      |         \
+    Op1   Op2   For      Result
+               /  \
+            Var   Then
+           /         \
+        Op1          Set    
+                        \
+                          Exprs
+                            |
+                          FunCall
+                          /       \
+                    funcName      Args
+                                  /  \
+                                Var   Var
+                              /         \
+                            Result      Op2
+
