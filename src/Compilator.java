@@ -37,8 +37,8 @@ public class Compilator {
         CommonTree arbre=(CommonTree)(parser.axiome().getTree()); // Génération de l'AST
 
         boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
-        /*if (valide) {
+        if (valide) {
             Generator.execute(); // Génération code 3 adresses
-        }*/
+        }
     }
 }
