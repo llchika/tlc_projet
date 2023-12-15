@@ -1,0 +1,37 @@
+Introduction:
+    Ce document décrit la grammaire while ainsi que la structure de l arbre Syntaxique abstrait(AST) pour  le langage WHILE.
+    L AST est une représentation hiérarchique des programmes WHILE aprés l analyse syntaxique.Il est construit à partir
+    de différentes règles de la grammaire. Chaque règle contribue à la construction d un élément spécifique de l AST
+
+
+Explication des règles principales: 
+    La régle function génère un noeud de l AST qui représente une fonction: 
+      function
+        : 'function' SYMBOL ':' definition -> ^(Function SYMBOL definition)
+        ;
+    
+
+    La règle command génère un noeud de l AST qui représente une affectation
+      command
+        : vars ':=' exprs -> ^(Set vars exprs)
+        ;
+    
+    
+...............;
+...............
+
+
+Tu veux des trucs comme ca  mon petit teddy? 
+         expression
+             |
+         __exprBase__
+        /     |      \
+      Nil  Var(A)   Symbol(x)
+        |
+      FunCall
+      /   |   \
+  'cons' Args  lExpr
+           |
+         exprBase
+            |
+           Var(B)
