@@ -1,0 +1,17 @@
+Pour l instant jfais tout dans le .cpp par flemme
+
+
+                  Runtime C++
+
+Cette partie du projet est destinée à permettre l'execution du C++ généré pour le compilateur.
+Cette librairie posséde les caractéristiques suivantes:
+                                        Définition d'une classe ArbreBinaire 
+                                        Définition de différentes fonctions retrouvables dans la grammaire du langage WHILE:
+                                                            -cons
+                                                            -list
+                                                            -hd
+                                                            -tl
+                                                            ..
+
+        
+
