@@ -1,0 +1,78 @@
+@startuml
+
+class MainProgramm {}
+
+class Lexer {
+    Tree generateAST()
+}
+MainProgramm *-- Lexer
+
+class Verificator {
+    checkAll(Tree AST)
+    void existingFunctions()
+    void useOfFunctions()
+    void useofVariable()
+}
+MainProgramm *-- Verificator
+
+class Function {
+    String name
+    int nbParams
+    bool implemented
+}
+Verificator *-- "n, functions" Function
+
+class IntCodeGenerator {
+    String* fonctions
+    generateCode(Tree AST)
+}
+MainProgramm *-- IntCodeGenerator
+
+class Instruction3Ad {
+    String result
+    Operator operator
+    String op1
+    String op2
+    void createOp(String, Flag, String, String)
+    void createOp(String, Flag, String)
+    void createOp(Flag, String)
+    Instruction3Ad(String, Flag, String, String)
+
+}
+IntCodeGenerator *-- "n, code" Instruction3Ad
+
+enum Operator {
+    op binaires:
+    cons
+    merge [seulement si opti]
+
+    op unaires :
+    copy
+    copyHd
+    copyTl
+    setTo
+    hd
+    tl
+
+    appels de fontions :
+    functCall
+    addParam
+    paramRef
+    paramCopy
+}
+Instruction3Ad *- Operator
+
+
+class Optimiser {
+    void optimise(List<Instruction3Ad> code)
+}
+
+MainProgramm *-- Optimiser
+
+class CppCodeGenerator {
+
+}
+
+MainProgramm *-- CppCodeGenerator
+
+@enduml
