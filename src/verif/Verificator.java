@@ -209,8 +209,9 @@ public class Verificator {
         if (!verifFun(funName)) {
             functions.add(new Triplet<>(funName, nRet, nArgs));
             return true;
+        } else {
+            throw new RuntimeException(funName+" function redefinition");
         }
-        return false;
     }
 
 
