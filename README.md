@@ -7,16 +7,18 @@ Le projet est structuré ainsi:
 ```c
 .
 ├── backend                 // Bibliothèque native (C++)
-├── grammaire               // Grammaire de While (ANTLR)
+├── grammaire               
 │   ├── antlr.jar
-│   └── while.g
+│   └── while.g             // Grammaire de While (ANTLR)
 ├── Makefile
 ├── programmes              // Exemples de programmes While
 ├── README.md
-└── src                     // Travail sur l'AST (Java)
-    ├── adresses            // Traduction vers code 3 adresses
-    ├── Compilator.java     // Main
-    └── verif               // Analyse sémantique
+├── src                     // Travail sur l'AST (Java)
+│   ├── adresses            // Traduction vers code 3 adresses
+│   ├── verif               // Analyse sémantique
+│   ├── utils
+│   └── Compilator.java     // Main
+└── swl                     // Bibliothèque standard While
 ```
 
 ## Compilation
