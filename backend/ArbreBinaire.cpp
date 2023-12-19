@@ -1,50 +1,51 @@
 #include "ArbreBinaire.h"
 
+// Pas encore modifié
 
-
-
-
-//Pas encore modifié 
-
-
-
-
-
-ArbreBinaire::ArbreBinaire(ArbreBinaire *left, ArbreBinaire *right)
+ArbreBinaire::ArbreBinaire(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right)
 {
-    *m_left=*left; //Copy et donc pas de pb 
-    *m_right=*right; //Copy et donc pas de pb 
+    m_left = (left != nullptr) ? std::make_shared<ArbreBinaire>(*left) : nullptr; // reecopie en profondeur
+    m_right = (right != nullptr) ? std::make_shared<ArbreBinaire>(*right) : nullptr; //idem ! 
 }
-
+ArbreBinaire::ArbreBinaire()
+{
+    //  arbre feuille
+}
+ArbreBinaire::ArbreBinaire(const ArbreBinaire &autre)
+{
+    // Parcours et copie recursive des arbres
+    m_left = (autre.getLeft() != nullptr) ? std::make_shared<ArbreBinaire>(*(autre.getLeft())) : nullptr; //profondeur recopie
+    m_right = (autre.getRight() != nullptr) ? std::make_shared<ArbreBinaire>(*(autre.getRight())) : nullptr;//recopie profondeur
+}
 // Getter
-ArbreBinaire * ArbreBinaire::getLeft()
+std::shared_ptr<ArbreBinaire> ArbreBinaire::getLeft() const
 {
-         return m_left;//si nullptr bah on veut le savoir
+    return m_left; // si nullptr bah on veut le savoir
 }
-ArbreBinaire * ArbreBinaire::getRight()
+std::shared_ptr<ArbreBinaire> ArbreBinaire::getRight() const
 {
-        return m_right;   //si nullptr bah on veut le savoir
+    return m_right; // si nullptr bah on veut le savoir
 }
-void ArbreBinaire::setLeft(ArbreBinaire *left)
+void ArbreBinaire::setLeft(const std::shared_ptr<ArbreBinaire> &left)
 {
-    *m_left = *left; //Copy et donc pas de pb 
-}
-void ArbreBinaire::setRight(ArbreBinaire *right)
-{
-    *m_right = *right; //Copy et donc pas de pb 
+    m_left = (left != nullptr) ? std::make_shared<ArbreBinaire>(*left) : nullptr; //profondeur
 }
 
-void ArbreBinaire::operator=(ArbreBinaire *arbre){
-    if(this!=arbre){
-        if(m_left!=nullptr){
-            delete m_left;
-        }
-        if(m_right!=nullptr){
-            delete m_right;
-        }
-    *m_left=*(arbre->getLeft());
-    *m_right=*(arbre->getRight());
-    *m_left =  new ArbreBinaire(*(arbre->getLeft()));
-    m_right = (arbre->getRight()) ? new ArbreBinaire(*(arbre->getRight())) : nullptr;
-    }
+void ArbreBinaire::setRight(const std::shared_ptr<ArbreBinaire> &right)
+{
+    m_right = (right != nullptr) ? std::make_shared<ArbreBinaire>(*right) : nullptr; //profondeur 
+}
+
+void ArbreBinaire::operator=(ArbreBinaire &arbre)
+{
+    m_left = (arbre.m_left != nullptr) ? std::make_shared<ArbreBinaire>(*arbre.m_left) : nullptr; //profondeur
+    m_right = (arbre.m_right != nullptr) ? std::make_shared<ArbreBinaire>(*arbre.m_right) : nullptr; //profondeur
+}
+
+int ArbreBinaire::compterFeuilles() const
+{
+    int feuillesGauche = (m_left != nullptr) ? m_left->compterFeuilles() : 1;  // Compter m_left comme feuille si c'est nullptr
+    int feuillesDroit = (m_right != nullptr) ? m_right->compterFeuilles() : 1; // Compter m_right comme feuille si c'est nullptr
+
+    return feuillesGauche + feuillesDroit;
 }
