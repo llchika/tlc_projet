@@ -49,3 +49,14 @@ int ArbreBinaire::compterFeuilles() const
 
     return feuillesGauche + feuillesDroit;
 }
+int ArbreBinaire::hauteurArbre(const std::shared_ptr<ArbreBinaire>& arbre) const {
+    if (arbre == nullptr) {
+        // Si l'arbre est vide, sa hauteur est 0
+        return 0;
+    } else {
+        // La hauteur de l'arbre est la plus grande hauteur entre les sous-arbres gauche et droit, plus 1 pour le nœud actuel.
+        int hauteurGauche = hauteurArbre(arbre->getLeft());
+        int hauteurDroit = hauteurArbre(arbre->getRight());
+        return 1 + std::max(hauteurGauche, hauteurDroit);
+    }
+}

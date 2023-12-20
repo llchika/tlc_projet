@@ -46,7 +46,7 @@ public:
         void operator=(ArbreBinaire &right); 
                                         
         int compterFeuilles() const ; //renvoie nbre de feuilles car flemme de faire un truc qui dessine un arbre 
-
+        int hauteurArbre(const std::shared_ptr<ArbreBinaire>& arbre) const;
         // Evaluateurs ca c'est chiant ! et chepaquoimettreencore
         bool evalueBool();          // TODO
         int evalueInt();            // TODO
