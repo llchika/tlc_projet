@@ -7,14 +7,14 @@ Ce répertoire contient la grammaire du langage While et un .jar contenant le ru
 ## Fonctions
 
 ### Déclaration unique
-Dans le cas où il n'y a qu'une fonction déclarée dans, l'AST aura la forme suivante:
+Dans le cas où une seule fonction est déclarée dans le programme, l'AST posséde la forme suivante:
 ```
 Function
 ├── ...
 └── ...
 ```
 
-Dans le cas où il y a plusieurs fonctions déclarées, l'AST aura la forme suivante:
+Dans le cas où plusieurs fonctions sont déclarées, l'AST posséde la forme suivante:
 ```
 nil
 ├── Function

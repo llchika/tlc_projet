@@ -28,14 +28,14 @@ public:
          * @param left: fils gauche
          * @param right: fils droit
         */
-        ArbreBinaire(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right = nullptr);
+        ArbreBinaire(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right);
 
         ArbreBinaire(); // Arbre feuille
 
         /**
          * @param autre: arbre à copier. Copie pronfonde
         */
-        ArbreBinaire(const ArbreBinaire &autre);
+        ArbreBinaire(const std::shared_ptr<ArbreBinaire> &autre);
 
         // Destructeur
         ~ArbreBinaire(){}; // automatique
@@ -48,7 +48,7 @@ public:
         void setLeft(const std::shared_ptr<ArbreBinaire> &left);     
         void setRight(const std::shared_ptr<ArbreBinaire> &right); 
 
-        // Operator=        Copie profonde
+        // Operator=       //TODO 
         void operator=(ArbreBinaire &right); 
 
         /**
