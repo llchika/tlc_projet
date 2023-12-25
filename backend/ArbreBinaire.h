@@ -63,11 +63,7 @@ public:
          * @return: true ou false
         */
         bool evalueBool();          // TODO
-
-        /**
-         * @return: valeur de l'arbre
-        */
-        int evalueInt()const;            
+          
 
         /**
          * @return: chaine de caractére 

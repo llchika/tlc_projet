@@ -48,13 +48,28 @@ int ArbreBinaire::compterFeuilles() const
 
     return feuillesGauche + feuillesDroit;
 }
-int ArbreBinaire::evalueInt() const {
-    if (m_right == nullptr) {
+
+
+//Fonctions d'évaluation
+int evalueAsInt(const std::shared_ptr<ArbreBinaire> arbre)  {
+    if (arbre->getRight() == nullptr) {
         return 1;
     } else {
-        int hauteurDroit = m_right->evalueInt();
+        int hauteurDroit = evalueAsInt(arbre->getRight());
         return 1 + hauteurDroit;
+    } 
+}
+//Pas du tout certain en fait !
+bool evalueAsBool(const std::shared_ptr<ArbreBinaire> arbre){
+    if(arbre==nullptr){
+        return false;// NULL que si arbre null ?
     }
-   
- 
+    else{
+        return true; 
+    }
+
+}
+
+std::string evalueAsString(const std::shared_ptr<ArbreBinaire> arbre){
+// on regarque chaque feuille et on met le code ascii= hauteur de celle-ci ???
 }
