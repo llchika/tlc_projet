@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <memory>
 #include <iostream>
@@ -57,16 +58,4 @@ public:
         int compterFeuilles() const ; 
 
 
-
-        // Evaluation d'un arbre
-        /**
-         * @return: true ou false
-        */
-        bool evalueBool();          // TODO
-          
-
-        /**
-         * @return: chaine de caractére 
-        */
-        std::string evalueString(); // TODO
 };

@@ -11,10 +11,10 @@ ArbreBinaire::ArbreBinaire()
 {
 //Arbre feuille
 }
-ArbreBinaire::ArbreBinaire(const ArbreBinaire &autre)
+ArbreBinaire::ArbreBinaire(const std::shared_ptr<ArbreBinaire> &autre)
 {
-    m_left = (autre.getLeft() != nullptr) ? std::make_shared<ArbreBinaire>(*(autre.getLeft())) : nullptr; //profondeur recopie
-    m_right = (autre.getRight() != nullptr) ? std::make_shared<ArbreBinaire>(*(autre.getRight())) : nullptr;//recopie profondeur
+    m_left = (autre->getLeft() != nullptr) ? std::make_shared<ArbreBinaire>(autre->getLeft()) : nullptr; //profondeur recopie
+    m_right = (autre->getRight() != nullptr) ? std::make_shared<ArbreBinaire>(autre->getRight()) : nullptr;//recopie profondeur
 }
 // Getters
 std::shared_ptr<ArbreBinaire> ArbreBinaire::getLeft() const
@@ -49,27 +49,3 @@ int ArbreBinaire::compterFeuilles() const
     return feuillesGauche + feuillesDroit;
 }
 
-
-//Fonctions d'évaluation
-int evalueAsInt(const std::shared_ptr<ArbreBinaire> arbre)  {
-    if (arbre->getRight() == nullptr) {
-        return 1;
-    } else {
-        int hauteurDroit = evalueAsInt(arbre->getRight());
-        return 1 + hauteurDroit;
-    } 
-}
-//Pas du tout certain en fait !
-bool evalueAsBool(const std::shared_ptr<ArbreBinaire> arbre){
-    if(arbre==nullptr){
-        return false;// NULL que si arbre null ?
-    }
-    else{
-        return true; 
-    }
-
-}
-
-std::string evalueAsString(const std::shared_ptr<ArbreBinaire> arbre){
-// on regarque chaque feuille et on met le code ascii= hauteur de celle-ci ???
-}
