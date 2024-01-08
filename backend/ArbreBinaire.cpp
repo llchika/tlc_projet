@@ -35,10 +35,10 @@ void ArbreBinaire::setRight(const std::shared_ptr<ArbreBinaire> &right)
     m_right = (right != nullptr) ? std::make_shared<ArbreBinaire>(*right) : nullptr;
 }
 
-void ArbreBinaire::operator=(ArbreBinaire &arbre)
+void ArbreBinaire::operator=(const ArbreBinaire &arbre)
 {
-    m_left = (arbre.m_left != nullptr) ? std::make_shared<ArbreBinaire>(*arbre.m_left) : nullptr; 
-    m_right = (arbre.m_right != nullptr) ? std::make_shared<ArbreBinaire>(*arbre.m_right) : nullptr; 
+    m_left = (arbre.getLeft() != nullptr) ? std::make_shared<ArbreBinaire>(arbre.getLeft()) : nullptr; 
+    m_right = (arbre.getRight() != nullptr) ? std::make_shared<ArbreBinaire>(arbre.getRight()) : nullptr; 
 }
 
 int ArbreBinaire::compterFeuilles() const

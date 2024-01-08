@@ -50,7 +50,7 @@ public:
         void setRight(const std::shared_ptr<ArbreBinaire> &right); 
 
         // Operator=      
-        void operator=(ArbreBinaire &right); 
+        void operator=(const ArbreBinaire &right); 
 
         /**
          * @return le nombre de feuilles dans l'arbre

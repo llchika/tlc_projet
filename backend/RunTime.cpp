@@ -116,6 +116,9 @@ void nop(){
  * @return valeur de l'arbre
 */
 int evalueAsInt(const std::shared_ptr<ArbreBinaire> arbre)  {
+    if(arbre==nullptr){
+        return 0;
+    }
     if (arbre->getRight() == nullptr) {
         return 1;
     } else {
