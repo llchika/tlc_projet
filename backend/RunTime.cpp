@@ -1,9 +1,5 @@
 #include "ArbreBinaire.h"
 #include "iostream"
-//Chaque fonction correspond à un élèment de
-//la partie 'Les expressions' de la spécification while
-
-
 
 /**
  * @return shared_ptr pointant sur un arbre feuille
@@ -13,7 +9,7 @@ std::shared_ptr<ArbreBinaire> symb() {
     return arbre;
 }
 
-//(cons) = nil construit un arbre vide 
+        //(cons) = nil construit un arbre vide 
 /**
  * @return nullptr<==> feuille//Arbre vide
 */
@@ -21,7 +17,7 @@ std::shared_ptr<ArbreBinaire> cons() {
     return nullptr;
 }
 
-// (cons A B) construit un arbre binaire ayant A pour fils gauche et B pour fils droit 
+        // (cons A B) construit un arbre binaire ayant A pour fils gauche et B pour fils droit 
 /**
  * @param left shared_ptr pointant sur un arbre  representant un fils gauche
  * @param right shared_ptr pointant sur un arbre representant un fils droit
@@ -32,20 +28,20 @@ std::shared_ptr<ArbreBinaire> cons(const std::shared_ptr<ArbreBinaire> &left, co
     return arbre;
 }
 
-// (cons T) = T retourne l’arbre T 
+        // (cons T) = T retourne l’arbre T 
 /**
  * @param arbre shared_ptr pointant sur un arbre à retourner
  * @return shared_ptr pointant sur une copie de arbre
 */
 std::shared_ptr<ArbreBinaire> cons(const std::shared_ptr<ArbreBinaire> &arbre) {
-    std::shared_ptr<ArbreBinaire> arbre = std::make_shared<ArbreBinaire>(arbre);
-    return arbre;
+    std::shared_ptr<ArbreBinaire> newarbre = std::make_shared<ArbreBinaire>(arbre);
+    return newarbre;
 }
 
-//(cons T1 T2 … Tn) = (cons T1 (cons T2 … (cons Tn-1 Tn) …)
-//Pas besoin ? enfin jamais on va avoir + de deux args 
+        //(cons T1 T2 … Tn) = (cons T1 (cons T2 … (cons Tn-1 Tn) …)
+        //Pas besoin ? enfin jamais on va avoir + de deux args 
 
-//(list) = nil construit une list vide
+        //(list) = nil construit une list vide
 /**
  * @return shared_ptr pointant sur un arbre vie
 */
@@ -53,7 +49,7 @@ std::shared_ptr<ArbreBinaire> list() {
     return cons();
 }
 
-//(list T) = (cons T nil) construit une liste a un élément
+        //(list T) = (cons T nil) construit une liste a un élément
 /**
  * @param element shared_ptr pointant sur un arbre à ajouter à la liste
  * @return shared_ptr pointant sur un arbre possédant comme fils gauche une copie de element, et comme fils droit un arbre nul
@@ -67,11 +63,11 @@ std::shared_ptr<ArbreBinaire> list(const std::shared_ptr<ArbreBinaire> &element)
 //idem que pour cons. ca serait cool si c est automatisé qu'on utilise que 2 trucs ! 
 
 
-/* (hd T) 
-o si T = (cons A B) alors retourne A
-o si T = Symb alors retourne nil 
-o si T = nil alors retourne nil
-Gestion erreur prise en compte
+        /* (hd T) 
+        o si T = (cons A B) alors retourne A
+        o si T = Symb alors retourne nil 
+        o si T = nil alors retourne nil
+        Gestion erreur prise en compte
 */
 /**
  * @param something shared_ptr pointant sur un arbre
@@ -87,11 +83,11 @@ std::shared_ptr<ArbreBinaire> hd(const std::shared_ptr<ArbreBinaire> &something)
     return cons(something->getLeft());//pas certian du cons ici
 }
 
-/* (tl T) 
-o si T = (const A B) alors retourne B
-o si T = Symb alors retourne nil
-o si T = nil alors retourne nil
-Gestion erreur prise en compte
+        /* (tl T) 
+        o si T = (const A B) alors retourne B
+        o si T = Symb alors retourne nil
+        o si T = nil alors retourne nil
+        Gestion erreur prise en compte
 */
 /**
  * @param something shared_ptr pointant sur un arbre
@@ -107,7 +103,7 @@ std::shared_ptr<ArbreBinaire> tl(const std::shared_ptr<ArbreBinaire> &something)
     return cons(something->getRight());
 }
 
-//Noting
+        //Noting
 void nop(){
     std::cout<<"O-O"<<std::endl;
 }

@@ -1,6 +1,7 @@
 #include "ArbreBinaire.h"
 #include <iostream>
-
+#ifndef CODETRANSLATOR_H
+#define CODETRANSLATOR_H
 class CodeTranslator{
 public:
     //Constructeur
@@ -16,4 +17,6 @@ private:
 
 
 
-}
+};
+
+#endif

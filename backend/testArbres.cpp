@@ -1,30 +1,39 @@
 #include "ArbreBinaire.h"
+#include "RunTime.cpp"
 #include <iostream>
-/*
-int main() {
-    std::shared_ptr<ArbreBinaire> feuille = std::make_shared<ArbreBinaire>();  //2 feuilles 
-    std::shared_ptr<ArbreBinaire> feuille2 = std::make_shared<ArbreBinaire>();  //2 feuilles pour tester modification
+#include <cassert>
+
+
+int testCopie() {
+    std::shared_ptr<ArbreBinaire> feuille = std::make_shared<ArbreBinaire>();  //arbre feuille
+    std::shared_ptr<ArbreBinaire> feuille2 = std::make_shared<ArbreBinaire>();  //arbre feuille
     
     // Test de la copie 
     std::shared_ptr<ArbreBinaire> arbre = std::make_shared<ArbreBinaire>(nullptr, feuille); //ie 3 feuilles 
-    std::shared_ptr<ArbreBinaire> arbreTest = std::make_shared<ArbreBinaire>(arbre); // Ici on le dit pas mais donc fils droit = nullptr ie 5 feuille car 4 dans le fils gauche (arbre), et 1 dans le droit (là de base)
-    std::cout << "Adresse arbre: " << arbre.get() << std::endl;
+    std::shared_ptr<ArbreBinaire> arbreTest = std::make_shared<ArbreBinaire>(arbre); // copie d'arbre  ie 3 feuilles
+    //Affichage des adresses
+    std::cout << "Adresse arbre: " << arbre.get() << std::endl; 
     std::cout << "Adresse arbre Test: " << arbreTest.get() << std::endl;
 
-    //Test d'evaluation d'un arbre vu comme un int
-    std::shared_ptr<ArbreBinaire> arbredeux = std::make_shared<ArbreBinaire>(nullptr, feuille); //arbre qui représente (cons nil (cons nil nil)) 
-
-    int intvalue = arbredeux->evalueInt();
-    int nombreDeFeuilles = arbredeux->compterFeuilles();
-    std::cout << "\nL'arbre possede " << nombreDeFeuilles <<" feuilles et reprèsente l'int "<<intvalue<< std::endl;
+    //Test d'evaluation du int
+    int intvalue1 = evalueAsInt(arbre);
+    int intvalue2 = evalueAsInt(arbreTest);
+    if(intvalue1==intvalue2){
+        std::cout <<"Copie réussie. Valeur="<<intvalue1<<std::endl;
+    }else{
+        std::cout <<"Echec test copie"<<std::endl;
+    }
+    
 
 
     
     
     return 0;
 }
-*/
-
+int main(){
+    testCopie();
+    return 1;
+}
 
 /* test ASCII
 #include "ArbreBinaire.h"
