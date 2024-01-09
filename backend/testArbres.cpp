@@ -2,6 +2,10 @@
 #include "RunTime.cpp"
 #include <iostream>
 #include <cassert>
+
+//Attention arbre->compterfeuilles() marche pas si arbre est un shared_ptr null
+//Ajouter des assert pour les arbres vides en entrée quand pas la flemme.
+
 /*
 Test de création(testCreation):
     Création d'un arbre ayant pour fils gauche arbre1 et comme fils droit arbre2
@@ -158,9 +162,31 @@ int testString() {
     std::cout<<"Test d evaluation d un string passe\n"<<std::endl;
     return 1;
 }
-//TODO
+//Test des fonctions pures de la runtime
 int testRunTime(){
-    
+    std::cout << "      Test RunTime "<< std::endl; 
+    //Test fonction Symb()
+    std::shared_ptr<ArbreBinaire> arbre=symb();
+    if(arbre->compterFeuilles()==2 && evalueAsInt(arbre)==1){
+        std::cout<<"Test fonction Symb() passe" <<std::endl;
+    }else{return 0;}
+    //Test fonction Cons()
+    std::shared_ptr<ArbreBinaire> arbre2=cons();
+    if(arbre2==nullptr && evalueAsInt(arbre2)==0){
+        std::cout<<"Test fonction cons() passe" <<std::endl;
+    }else{return 0;}
+    //Test fonction cons(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right)
+    std::shared_ptr<ArbreBinaire> nulArbre=cons();
+    std::shared_ptr<ArbreBinaire> Arbrefeuille = std::make_shared<ArbreBinaire>(); 
+    std::shared_ptr<ArbreBinaire> arbre3 = cons(nulArbre,Arbrefeuille);  
+    if(arbre3->compterFeuilles()==3 && evalueAsInt(arbre3)==2){
+        std::cout<<"Test fonction cons(left,right) passe" <<std::endl;
+    }
+    //Test fonction cons(const std::shared_ptr<ArbreBinaire> &arbre)
+    std::shared_ptr<ArbreBinaire> arbre4 = cons(arbre3);  
+    if(arbre4->compterFeuilles()==3 && evalueAsInt(arbre4)==2){
+        std::cout<<"Test fonction cons(arbre) passe" <<std::endl;
+    }
 }
 int main(){
     //Test creation d'arbres: creation de deux arbres, fusion de ces deux arbres en un nouvel arbre.
