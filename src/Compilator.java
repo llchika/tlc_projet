@@ -1,19 +1,22 @@
-import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
+package src;
+
+import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return; // ???
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 
-import lp.whileLexer;
-import lp.whileParser;
+import src.lp.whileLexer;
+import src.lp.whileParser;
 
-import verif.Verificator;
+import src.verif.Verificator;
 import src.adresses.Generator;
-import src.adresses.Instruction3Ad;
 
 import java.io.File;
 
+/**
+ * Main, charge les fichiers sources, le parser et le lexer,
+ * lance la vérification de l'AST et la génération du code 3 adresses
+ */
 public class Compilator {
-    
-
     public static void main(String[] args) throws Exception {
         System.out.println("Build begin");
         if (args.length!=0) {
@@ -31,8 +34,7 @@ public class Compilator {
         CommonTokenStream tokens=new CommonTokenStream(lexer);
         whileParser parser=new whileParser(tokens);
 
-        // Voir CommonTree;
-        CommonTree arbre=(CommonTree)(parser.axiome().getTree());
+        CommonTree arbre=(CommonTree)(parser.axiome().getTree()); // Génération de l'AST
 
         boolean valide=true; //Verificator.execute(arbre); // Vérifications sur l'AST
         if (valide) {
@@ -42,7 +44,7 @@ public class Compilator {
             Generator.printCode();
             // Generator.afficheAST(arbre);
         } else {
-            System.out.println("Problème inconnu");
+            System.out.println("Echec de la build");
         }
     }
 }

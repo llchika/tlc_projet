@@ -5,45 +5,42 @@ options {
 }
 
 tokens {
-    Instructions;
-    Input;
+    Var;
+    Function;
+    Commands;
     Output;
+    Input;
+    Function;
+    Definition;
+    Corps;
     Set;
-    
-    BoucleFor;
-    For;
-    Do;
-    Od;
-    
-    BoucleIf;
+    FunCall;
+    Nil;
+    Args;
+    Exprs;
     If;
-    Then;
     Else;
-    
-    BoucleWhile;
+    Then;
+    Condition;
     While;
-    
-    BoucleForeach;
-    Foreach;
-    In;
-    
-    Tail;
-    Head;
-    List;
-    IsEqual;
+    For;
+    ForEach;
+    Nop;
+    Symbol;
+    Equals;
 }
 
+
 @lexer::header {
-    package lp;
+    package src.lp;
 }
 
 @parser::header {
-    package lp;
+    package src.lp;
 }
 
-axiome
-	:	program;
-	
+axiome: program ;
+
 fragment
 COMMUN      : ('a'..'z'|'A'..'Z'|'0'..'9');
 
@@ -79,40 +76,68 @@ WS  :   ( ' '
                     //   Def grammaire While   //
 //////////////////////////////////////////////////////////////////////
 
-program     :  function program? ;
 
-function    : 'function' SYMBOL ':' definition -> ^('function' SYMBOL definition);
+    
+program
+    : function program?
+    ;
 
-definition  : 'read' input? '%' commands '%' 'write' output -> ^(Input input)? ^(Instructions commands) ^(Output output);
+function
+    : 'function' SYMBOL ':' definition -> ^(Function SYMBOL definition)
+    ;
 
-input       : inputSub;
+definition
+    : 'read' input? '%' commands '%' 'write' output -> ^(Definition input? ^(Corps commands) ^(Output output))
+    ;
 
-inputSub    : VARIABLE ',' inputSub -> VARIABLE inputSub | VARIABLE;
+input
+    : inputSub -> ^(Input inputSub)
+    ;
 
-output      : VARIABLE ',' output  -> VARIABLE output | VARIABLE;
+inputSub
+    : VARIABLE (',' inputSub)? -> VARIABLE inputSub?
+    ;
 
-commands    : command(';'commands)?-> command commands?;
+output
+    : VARIABLE( ',' output)? -> VARIABLE output?
+    ;
 
-vars        : VARIABLE ',' vars -> ^(VARIABLE vars)| VARIABLE;
+commands
+    : command(';'commands)? -> command commands?
+    ;
 
-exprs       :  expression (',' exprs -> ^(expression exprs) | -> expression);
+vars
+    : VARIABLE (',' vars)? -> ^(Var VARIABLE vars?)
+    ;
 
-command     : 'nop'
-            | vars ':=' exprs -> ^(Set vars exprs) 
-            | 'if' expression 'then' commands ('else' commands)? 'fi'->^(BoucleIf  ^(If expression)^(Then commands) ^(Else commands)?)
-            | 'while' expression 'do' commands 'od' ->^(BoucleWhile  ^(While expression)^(Do commands) )
-            | 'for' expression 'do' commands 'od' ->^(BoucleFor  ^(For expression)^(Do commands) )
-            | 'foreach' VARIABLE 'in' expression 'do' commands 'od' -> ^(BoucleForeach  ^(Foreach VARIABLE)^(In expression) ^(Do commands))
-            ;
+exprs
+    : expression (',' exprs)? -> ^(Exprs expression exprs?)
+    ;
+    
+command
+    : 'nop' -> ^(Nop)
+    | vars ':=' exprs -> ^(Set vars exprs)
+    | 'if' expression 'then' commands ('else' commands)? 'fi' -> ^(If ^(Condition expression) ^(Then commands)  ^(Else commands)?)
+    | 'while' expression 'do' commands 'od' -> ^(While expression ^(Then commands))
+    | 'for' expression 'do' commands 'od' -> ^(For expression ^(Then commands))
+    | 'foreach' VARIABLE 'in' expression 'do' commands 'od' -> ^(ForEach VARIABLE expression ^(Then commands))
+    ;
 
-exprBase    : ( 'nil' | VARIABLE | SYMBOL )
-            | ( '(' 'cons' exprBase exprBase? ')' -> ^('cons' exprBase exprBase?)
-            | '(' 'list' lExpr ')' -> ^(List lExpr))
-            | ( '(' 'hd' exprBase ')' -> ^(Head exprBase) 
-            | '(' 'tl' exprBase ')' -> ^(Tail exprBase))
-            | ( '(' SYMBOL lExpr? ')' -> ^(SYMBOL lExpr?))
-            ;
+exprBase
+    : 'nil' -> ^(Nil)
+    | VARIABLE -> ^(Var VARIABLE)
+    | SYMBOL -> ^(Symbol SYMBOL) // May be useless
+    | '(' 'cons' lExpr? ')' -> ^(FunCall 'cons' ^(Args lExpr?))
+    | '(' 'list' lExpr ')' -> ^(FunCall 'list' ^(Args lExpr))
+    | '(' 'hd' exprBase ')' -> ^(FunCall 'hd' ^(Args exprBase))
+    | '(' 'tl' exprBase ')' -> ^(FunCall 'tl' ^(Args exprBase))
+    | '(' SYMBOL lExpr? ')' -> ^(FunCall SYMBOL ^(Args lExpr?))
+    ;
 
-expression  : exprBase ('=?' exprBase -> ^(IsEqual exprBase exprBase) | -> exprBase) ;
-        
-lExpr       : exprBase lExpr? ;
+expression
+    : exprBase ('=?' exprBase -> ^(Equals exprBase exprBase) | -> exprBase)
+    ;
+
+lExpr
+    : exprBase lExpr? -> exprBase lExpr?
+    ;
