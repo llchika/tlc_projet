@@ -15,6 +15,7 @@ public class Compilator {
     
 
     public static void main(String[] args) throws Exception {
+        System.out.println("Build begin");
         if (args.length!=0) {
             File file=new File(args[0]);
             if(!file.exists()) {
@@ -33,10 +34,13 @@ public class Compilator {
         // Voir CommonTree;
         CommonTree arbre=(CommonTree)(parser.axiome().getTree());
 
-        boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
+        boolean valide=true; //Verificator.execute(arbre); // Vérifications sur l'AST
         if (valide) {
             Generator.generateCodeFrom(arbre); // Génération code 3 adresses
+
+            System.out.println("Code généré");
             Generator.printCode();
+            // Generator.afficheAST(arbre);
         } else {
             System.out.println("Problème inconnu");
         }
