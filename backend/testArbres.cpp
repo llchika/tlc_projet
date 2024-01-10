@@ -136,7 +136,7 @@ int testCreation(const std::shared_ptr<ArbreBinaire>& arbre1 ,const std::shared_
 }
 
 
-//TODO
+//TODO si temps
 //Fonction test de l'évaluation d'un string
 int testString() {
     std::cout << "      Test StringEvaluation "<< std::endl; 
@@ -187,6 +187,28 @@ int testRunTime(){
     if(arbre4->compterFeuilles()==3 && evalueAsInt(arbre4)==2){
         std::cout<<"Test fonction cons(arbre) passe" <<std::endl;
     }
+    //Test fonction list()
+    std::shared_ptr<ArbreBinaire> arbre5=list();
+    if(arbre5==nullptr && evalueAsInt(arbre5)==0){
+        std::cout<<"Test fonction list() passe" <<std::endl;
+    }else{return 0;}
+    //Test fonction list(const std::shared_ptr<ArbreBinaire> &element)
+    std::shared_ptr<ArbreBinaire> arbre6=list(Arbrefeuille);
+    if(evalueAsInt(arbre6)==1 && arbre6->compterFeuilles()==3){
+        std::cout<<"Test fonction list(element) passe" <<std::endl;
+    }else{return 0;}
+    //Test fonction hd()
+    std::shared_ptr<ArbreBinaire> arbre7=cons(Arbrefeuille,cons());
+    if(hd(cons())==nullptr && hd(Arbrefeuille)==nullptr && hd(arbre7)->compterFeuilles()==2){
+        std::cout<<"Test fonction hd passe" <<std::endl;
+    }else{return 0;}
+    //Test fonction tl()
+    std::shared_ptr<ArbreBinaire> arbre8=cons(cons(),Arbrefeuille);
+    if(tl(cons())==nullptr && tl(Arbrefeuille)==nullptr && tl(arbre8)->compterFeuilles()==2){
+        std::cout<<"Test fonction tl passe" <<std::endl;
+    }else{return 0;}
+
+
 }
 int main(){
     //Test creation d'arbres: creation de deux arbres, fusion de ces deux arbres en un nouvel arbre.
@@ -201,11 +223,11 @@ int main(){
     std::shared_ptr<ArbreBinaire> miroir = std::make_shared<ArbreBinaire>();
     testEgalite(element, miroir);
     //Test d'evaluation d'un arbre vu comme un integer
-    //testInteger();
+    //testInteger();//TODO
     //Test d'evaluation d'un arbre vu comme un booleen
-   // testBool();
+   // testBool();//TODO
     //Test d'evaluation d'un arbre vu comme un integer
-    testString();
+    testString();//TODO
 
     //Test de la runtime
     testRunTime();
