@@ -22,6 +22,9 @@ private:
         // Initialement un arbre feuille
         std::shared_ptr<ArbreBinaire> m_left = nullptr;  // Fils gauche
         std::shared_ptr<ArbreBinaire> m_right = nullptr; // Fils droit
+        // Setter                                   Copie profonde                                                                     
+        void setLeft(const std::shared_ptr<ArbreBinaire> &left);     
+        void setRight(const std::shared_ptr<ArbreBinaire> &right); 
 
 public:
         // Constructeurs
@@ -45,9 +48,7 @@ public:
         std::shared_ptr<ArbreBinaire> getLeft() const;  
         std::shared_ptr<ArbreBinaire> getRight() const; 
 
-        // Setter                                   Copie profonde                                                                     
-        void setLeft(const std::shared_ptr<ArbreBinaire> &left);     
-        void setRight(const std::shared_ptr<ArbreBinaire> &right); 
+        
 
         // Operator=      
         void operator=(const ArbreBinaire &right); 

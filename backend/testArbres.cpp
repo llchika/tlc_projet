@@ -208,7 +208,28 @@ int testRunTime(){
         std::cout<<"Test fonction tl passe" <<std::endl;
     }else{return 0;}
 
-
+    std::cout<<"test runtime passe\n"<<std::endl;
+}
+int testBool(){
+    std::cout << "      Test evalueAsBool "<< std::endl; 
+    std::shared_ptr<ArbreBinaire> nulArbre=cons();
+    if(evalueAsBool(nulArbre)==false && evalueAsBool(symb())==true){
+        std::cout<<"Test fonction bool passe" <<std::endl;
+    }else{return 0;}
+    std::cout<<"test evalueAsBool passe\n"<<std::endl;
+}
+int testInteger(){
+    std::cout << "      Test evalueAsInt "<< std::endl; 
+    std::shared_ptr<ArbreBinaire> nulArbre=cons();
+    std::shared_ptr<ArbreBinaire> arbre = cons();
+    // Ajout de 97 niveaux de fils pour obtenir un int de 97
+    for (int i = 0; i < 97; ++i) {
+        arbre = std::make_shared<ArbreBinaire>(nullptr, arbre);
+    }
+    if(evalueAsInt(nulArbre)==0 && evalueAsInt(symb())==1 && evalueAsInt(arbre)==97){
+        std::cout<<"Test fonction int passe" <<std::endl;
+    }else{return 0;}
+    std::cout<<"test avalueAsInt passe\n"<<std::endl;
 }
 int main(){
     //Test creation d'arbres: creation de deux arbres, fusion de ces deux arbres en un nouvel arbre.
@@ -223,11 +244,11 @@ int main(){
     std::shared_ptr<ArbreBinaire> miroir = std::make_shared<ArbreBinaire>();
     testEgalite(element, miroir);
     //Test d'evaluation d'un arbre vu comme un integer
-    //testInteger();//TODO
+    testInteger();
     //Test d'evaluation d'un arbre vu comme un booleen
-   // testBool();//TODO
+    testBool();
     //Test d'evaluation d'un arbre vu comme un integer
-    testString();//TODO
+    testString();//TODO.. juste un test pour simuler le caractere a
 
     //Test de la runtime
     testRunTime();
