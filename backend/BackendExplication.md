@@ -1,17 +1,20 @@
 # Explication du backend
+Ce répertoire contient l'ensemble du backend de notre compilator. La runtime ainsi que le traducteur de code 3 adresses en code C++
+
 ## Explication de la runTime
-La runtime est composée de 2 éléments: une classe arbreBinaire consultable dans les fichiers ArbreBinaire.h et ArbreBinaire.cpp; ainsi qu'une liste de fonctions permettant de traduire le concept while en c++.
+La runtime est composée de 2 éléments : une classe arbreBinaire consultable dans les fichiers ArbreBinaire.h et ArbreBinaire.cpp ; ainsi qu'une liste de fonctions permettant de traduire le concept "while" en C++.
 
 ### ArbreBinaire
-ArbreBinaire est la représentation d'un arbre binaire dans le langage C++. Son utilisation est étroitement liée à celle des shared_ptr, qui sont des pointeurs permettant de faciliter la gestion de la mémoire. Lorsqu'un arbre binaire est crée à l'aide d'un shared_ptr, un compteur permet de connaitre combien de pointeurs pointent sur l'arbre. Quand l'arbre n'est plus référencé, il est alors automatiquement détruit. 
+ArbreBinaire est la représentation d'un arbre binaire dans le langage C++. Son utilisation est étroitement liée à celle des shared_ptr, qui sont des pointeurs permettant de faciliter la gestion de la mémoire. Lorsqu'un arbre binaire est créé à l'aide d'un shared_ptr, un compteur permet de connaître combien de pointeurs pointent sur l'arbre. Quand l'arbre n'est plus référencé, il est alors automatiquement détruit. 
 
 Deux paramétres privés:
     std::shared_ptr<ArbreBinaire> left qui représente le fils gauche
     std::shared_ptr<ArbreBinaire> right qui représente le fils droit
-Les feuilles sont représentées par des nullptr. un arbre nul sera représenté par un nulltr, et ne necessitera pas l'utilisation de cette classe.
+Les feuilles sont représentées par des nullptr. Un arbre nul sera représenté par un nullptr, et ne nécessitera pas l'utilisation de cette classe.
 
-Cette a été concue pour être la plus résistante possible. Ainsi, lorsqu'un arbre est crée, il est impossible de le modifier. Le seul moyen pour y parvenir est de créer un nouvel arbre. 
-Nous travaillons uniquement avec des shared_ptr, c'est à dire que les méthodes et fonctions de la runtime en prennent en paramétre.
+
+Cette classe a été conçue pour être la plus résistante possible. Ainsi, lorsqu'un arbre est créé, il est impossible de le modifier. 
+Le seul moyen pour y parvenir est de créer un nouvel arbre. Nous travaillons uniquement avec des shared_ptr, c'est-à-dire que les méthodes et fonctions de la runtime en prennent en paramètre.
 
 Méthodes disponibles:
     - ArbreBinaire(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right) qui permet de créer un arbre ayant pour fils gauche left et comme fils droit right qui sont tout deux des shared_ptr<ArbreBinaire>. Ce constructeur utilise une copie des deux paramétres afin d'éviter que la modification de left ou right puisse nuire à cet arbre.
@@ -55,4 +58,4 @@ les fonctions de la runtime sont toutes basée sur la classe décrire précedemm
 
 - bool evalueAsBool(const std::shared_ptr<ArbreBinaire> arbre) retourne l'évaluation d'un arbre vu comme un booleen. true si l'arbre n'est pas null, false sinon.
 
-- std::string evalueAsString( const std::shared_ptr<ArbreBinaire> arbre, int hauteur=0) retourne l'évaluation d'un arbre vu comme un std::string. Pour cela, on regarde les differentes branches d'un arbre. Quand on arrive sur un sous-arbre qui posséde comme fils gauche et droit un nullptr, alors on retourne le caractere associe au code ASCII, en formant au final le string.
+- std::string evalueAsString( const std::shared_ptr<ArbreBinaire> arbre, int hauteur=0) Retourne l'évaluation d'un arbre vu comme un std::string. Pour cela, on examine les différentes branches de l'arbre. Quand on arrive sur un sous-arbre qui possède comme fils gauche et droit un nullptr, alors on retourne le caractère associé au code ASCII, formant ainsi le string final.

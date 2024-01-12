@@ -50,8 +50,9 @@ start: $(BUILD_DIR)/src/$(EXE).class
 	@echo "$(CYAN)Executing$(NC) $(GREEN)$(EXE)$(NC)"
 	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) src/$(EXE) "$(file)"
 
+# Test la librairie runtiùe
 testArbre:  backend/*.h 
-	g++ backend/testArbres.cpp   backend/ArbreBinaire.cpp  -o test
+	g++ backend/testArbres.cpp   backend/ArbreBinaire.cpp  -o test 
 
 
 # Nettoie le projet

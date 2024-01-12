@@ -4,19 +4,23 @@
 #define CODETRANSLATOR_H
 class CodeTranslator{
 public:
-    //Constructeur
-    CodeTranslator(){};
+    /**
+     * @param codeAdresse code 3 adresses stocké à traduire
+    */
+    CodeTranslator(std::string & codeAdresse):m_codeAdresse(codeAdresse)
+    {}
 
     /**
-     * @param codeAdresse le contenu du fichier contenant le code 3 adresses
+     * @return code C++
     */
-    std::string translateToCpp(const std::string & codeAdresse);
+    std::string translateToCpp();
 
 
 private:
+    std::string m_codeAdresse;
 
 
 
 };
 
-#endif
+#endif 
