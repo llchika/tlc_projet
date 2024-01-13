@@ -51,8 +51,8 @@ start: $(BUILD_DIR)/src/$(EXE).class
 	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) src/$(EXE) "$(file)"
 
 # Test du backEnd
-testArbre:  backend/*.h 
-	g++ backend/testArbres.cpp   backend/ArbreBinaire.cpp  -o test 
+testBackend:  backend/*.h 
+	g++ backend/testBackend.cpp   backend/ArbreBinaire.cpp  -o test 
 
 
 # Nettoie le projet
