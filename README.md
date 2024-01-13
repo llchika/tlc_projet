@@ -46,3 +46,7 @@ Par exemple, pour compiler programmes/test.while
 ```
 make file=programmes/test.while start
 ```
+Pour tester le backend
+```
+make testArbre
+```
