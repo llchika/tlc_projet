@@ -7,18 +7,28 @@ Le projet est structuré ainsi:
 ```c
 .
 ├── backend                 // Bibliothèque native (C++)
+│   ├── ArbreBinaire.h      //Classe definissant la structure d'arbre
+│   ├── ArbreBinaire.cpp
+│   ├── BackendExplication.md  //Explication backend
+│   ├── CodeTranslator.h    //Classe traduction de code 3 adresses vers le code C++
+│   ├── CodeTranslator.cpp
+│   ├── RunTime.cpp        //Contient les fonctions nécessaires à l'execution du code C++
+│   ├── testBackend.cpp    //Couverture de test
+
 ├── grammaire               
 │   ├── antlr.jar
 │   └── while.g             // Grammaire de While (ANTLR)
-├── Makefile
+│   ├── description_ast.md  //Description de l'ast, de la grammaire
+
 ├── programmes              // Exemples de programmes While
-├── README.md
 ├── src                     // Travail sur l'AST (Java)
 │   ├── adresses            // Traduction vers code 3 adresses
 │   ├── verif               // Analyse sémantique
 │   ├── utils
 │   └── Compilator.java     // Main
 └── swl                     // Bibliothèque standard While
+├── README.md
+├── Makefile                //Chaîne de compilation
 ```
 
 ## Compilation
