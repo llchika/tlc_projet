@@ -4,8 +4,6 @@
 #include <cassert>
 
 //Attention arbre->compterfeuilles() marche pas si arbre est un shared_ptr null
-//Ajouter des assert pour les arbres vides en entrée quand pas la flemme.
-
 /*
 Test de création(testCreation):
     Création d'un arbre ayant pour fils gauche arbre1 et comme fils droit arbre2
@@ -20,6 +18,13 @@ Test d'Égalité (testEgalite) :
     et valeurs de chaînes. S'arrête si les deux arbres ne sont pas identiques. 
 Test de EvaluateAsString(testString):
     Creation d'un arbre de 97 etages et verification de l'obtention d'un a
+Test d'évaluation d'un arbre comme un booleen (testBool)
+    Test du true ou false
+Test d'évaluation d'un arbre comme un integer(testInteger)
+    Verification qu'un arbre null correspond à 0
+    Verification que hauteur de l'arbre = le bon integer
+Test de la runtime() testRunTime
+    Verification dans l'ordre de la spécification de l'ensemble des fonctions disponibles.
 */
 
 

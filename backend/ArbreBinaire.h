@@ -19,10 +19,10 @@
 class ArbreBinaire
 {
 private:
-        // Initialement un arbre feuille
+        // Initialement un noeud
         std::shared_ptr<ArbreBinaire> m_left = nullptr;  // Fils gauche
         std::shared_ptr<ArbreBinaire> m_right = nullptr; // Fils droit
-        // Setter                                   Copie profonde                                                                     
+        // Setters                                   Copie profonde                                                                     
         void setLeft(const std::shared_ptr<ArbreBinaire> &left);     
         void setRight(const std::shared_ptr<ArbreBinaire> &right); 
 
@@ -54,7 +54,7 @@ public:
         void operator=(const ArbreBinaire &right); 
 
         /**
-         * @return le nombre de feuilles dans l'arbre
+         * @return le nombre de feuilles dans l'arbre. Juste utile pour les tests ! à surtout pas utiliser en dehors !!!
         */          
         int compterFeuilles() const ; 
 

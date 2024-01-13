@@ -13,6 +13,6 @@ std::string CodeTranslator::translateToCpp(){
     std::string line="";
     //Boucle sur le stream. 
     while(std::getline(interStream,line)){
-      //Il existe des methodes comme .find pour traiter en fonction de ce qu'il y a
+     //Faudrait que le code intermediaire ecrive déja bien le truc comme ca juste à modifier deux trois trucs ? car sinon c est chaint de differencier une variable, d'une fonction, compter les args,...
     }
 }

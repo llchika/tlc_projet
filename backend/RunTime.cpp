@@ -115,7 +115,7 @@ void nop(){
  * @param arbre shared_ptr pointant sur l'arbre à évaluer
  * @return valeur de l'arbre
 */
-int evalueAsInt(const std::shared_ptr<ArbreBinaire> arbre)  {
+int evalueAsInt(const std::shared_ptr<ArbreBinaire> arbre)  {// Voir dans le test des strings un exemple
     if(arbre==nullptr){
         return 0;
     }
@@ -156,7 +156,7 @@ std::string evalueAsString( const std::shared_ptr<ArbreBinaire> arbre, int haute
     if(arbre==nullptr){
         return string;
     }
-    if(arbre->getLeft()==nullptr && arbre->getRight()==nullptr){
+    else if(arbre->getLeft()==nullptr && arbre->getRight()==nullptr){
         char ascii=hauteur;
         string+=ascii;
         return string;

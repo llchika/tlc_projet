@@ -33,7 +33,7 @@ Méthodes disponibles:
 
     -int compterFeuilles() retourne le nombre de feuilles d'un arbre. Attention, l'utilisation de cette méthode est risquée. L'appliquer dans un arbre, sur une feuille ne retourne rien.
 
-### fonctions propres à la runtime
+### fonctions de la runtime
 les fonctions de la runtime sont toutes basée sur la classe décrire précedemment.
 
 - std::shared_ptr<ArbreBinaire> symb() retourne un shared_ptr sur un arbre feuille
@@ -59,3 +59,28 @@ les fonctions de la runtime sont toutes basée sur la classe décrire précedemm
 - bool evalueAsBool(const std::shared_ptr<ArbreBinaire> arbre) retourne l'évaluation d'un arbre vu comme un booleen. true si l'arbre n'est pas null, false sinon.
 
 - std::string evalueAsString( const std::shared_ptr<ArbreBinaire> arbre, int hauteur=0) Retourne l'évaluation d'un arbre vu comme un std::string. Pour cela, on examine les différentes branches de l'arbre. Quand on arrive sur un sous-arbre qui possède comme fils gauche et droit un nullptr, alors on retourne le caractère associé au code ASCII, formant ainsi le string final.
+
+
+## Couverture de test
+Une couverture de test naive a été établie afin de verifier le bon fonctionnement des diverses fonctionalitées du backend. La couverture va de la création d'un arbre binaire, à son evalution, et le test de la runtime.
+
+- Test de création(testCreation):
+    Création d'un arbre ayant pour fils gauche arbre1 et comme fils droit arbre2
+    Création d'un arbre-feuille
+- Test Modif (testModif) :
+    Création de deux arbres feuilles.
+    Initialisation d'un arbre et d'un arbre de test créé à partir du premier.
+    Évaluations et comparaisons en termes d'adresse, de copie, et de modification de l'arbre en verifiant la non-modification de l'arbre test.
+    Utilisation de l'opérateur d'égalité (operator=).
+- Test d'Égalité (testEgalite) :  
+    Comparaison entre deux arbres pour vérifier l'égalité en termes de nombre de feuilles, valeurs booléennes, valeurs entières
+    et valeurs de chaînes. S'arrête si les deux arbres ne sont pas identiques. 
+- Test de EvaluateAsString(testString):
+    Creation d'un arbre de 97 etages et verification de l'obtention d'un a
+- Test d'évaluation d'un arbre comme un booleen (testBool)
+    Test du true ou false
+- Test d'évaluation d'un arbre comme un integer(testInteger)
+    Verification qu'un arbre null correspond à 0
+    Verification que hauteur de l'arbre = le bon integer
+- Test de la runtime() testRunTime
+    Verification dans l'ordre de la spécification de l'ensemble des fonctions disponibles.
