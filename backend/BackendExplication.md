@@ -17,6 +17,7 @@ Cette classe a été conçue pour être la plus résistante possible. Ainsi, lor
 Le seul moyen pour y parvenir est de créer un nouvel arbre. Nous travaillons uniquement avec des shared_ptr, c'est-à-dire que les méthodes et fonctions de la runtime en prennent en paramètre.
 
 Méthodes disponibles:
+
     - ArbreBinaire(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right) qui permet de créer un arbre ayant pour fils gauche left et comme fils droit right qui sont tout deux des shared_ptr<ArbreBinaire>. Ce constructeur utilise une copie des deux paramétres afin d'éviter que la modification de left ou right puisse nuire à cet arbre.
 
     - ArbreBinaire() qui permet de créer un arbre feuille.
