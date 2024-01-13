@@ -62,7 +62,7 @@ les fonctions de la runtime sont toutes basée sur la classe décrire précedemm
 
 
 ## Couverture de test
-Une couverture de test naive a été établie afin de verifier le bon fonctionnement des diverses fonctionalitées du backend. La couverture va de la création d'un arbre binaire, à son evalution, et le test de la runtime.
+Une couverture de test naïve a été établie afin de vérifier le bon fonctionnement des différentes fonctionnalités du backend. La couverture va de la création d'un arbre binaire à son évaluation, en passant par le test de la runtime
 
 - Test de création(testCreation):
     Création d'un arbre ayant pour fils gauche arbre1 et comme fils droit arbre2
