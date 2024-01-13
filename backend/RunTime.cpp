@@ -168,3 +168,15 @@ std::string evalueAsString( const std::shared_ptr<ArbreBinaire> arbre, int haute
 
     return string;
 }
+
+//En vrai tu voulais ca teDy ? 
+void pp(const std::shared_ptr<ArbreBinaire> arbre,const char & type){
+    switch(type){
+        case 'i':
+            evalueAsInt(arbre);
+        case 'b':
+            evalueAsBool(arbre);
+        case 's':
+        evalueAsString(arbre);
+    }
+}
