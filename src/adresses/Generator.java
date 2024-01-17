@@ -25,7 +25,7 @@
 
 
 // TODO : changer les nom des instructions du style "BoucleIf", "BoucleFor"
-
+// TODO : nouveau while.g issu de la fusion avec main ne fonctionne pas
 
 package src.adresses;
 
@@ -35,7 +35,6 @@ import org.antlr.runtime.tree.*;
 
 import com.sun.org.apache.bcel.internal.generic.Instruction;
 //import com.sun.source.tree.Tree;
-import com.sun.source.tree.Tree;
 
 import src.adresses.Instruction3Ad;
 
@@ -222,12 +221,11 @@ public class Generator {
     }
 
     public static void afficheAST(Tree arbre) {
-        System.out.println(arbre.toString());
-        int i = 0;
-        while (arbre.getChild(i) != null) {
+        System.out.print(arbre.toString() + " (");
+        for (int i = 0 ; i < arbre.getChildCount() ; i++) {
             System.out.print("ind " + i + " : ");
             afficheAST(arbre.getChild(i));
-            i++;
         }
+        System.out.print(" )");
     }
 }

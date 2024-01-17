@@ -38,11 +38,11 @@ public class Compilator {
 
         boolean valide=true; //Verificator.execute(arbre); // Vérifications sur l'AST
         if (valide) {
+            Generator.afficheAST(arbre);
             Generator.generateCodeFrom(arbre); // Génération code 3 adresses
 
             System.out.println("Code généré");
             Generator.printCode();
-            // Generator.afficheAST(arbre);
         } else {
             System.out.println("Echec de la build");
         }
