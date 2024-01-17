@@ -50,6 +50,11 @@ start: $(BUILD_DIR)/src/$(EXE).class
 	@echo "$(CYAN)Executing$(NC) $(GREEN)$(EXE)$(NC)"
 	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) src/$(EXE) "$(file)"
 
+# Test du backEnd
+testBackend:  backend/*.h 
+	g++ backend/testBackend.cpp   backend/ArbreBinaire.cpp  -o test 
+
+
 # Nettoie le projet
 clean:
 	@echo "$(RED)Cleaning$(NC) $(GREEN)project$(NC)"
