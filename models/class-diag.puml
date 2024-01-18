@@ -48,17 +48,15 @@ enum Operator {
 
     op unaires :
     copy
-    copyHd
-    copyTl
     setTo
     hd
     tl
+    newConst
 
     appels de fontions :
     functCall
-    addParam
-    paramRef
-    paramCopy
+    param
+    getParam
 }
 Instruction3Ad *- Operator
 

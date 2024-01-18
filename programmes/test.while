@@ -1,0 +1,17 @@
+function fonct :
+read B, C
+%
+A := B?
+
+%
+write A
+
+function main :
+read
+%
+B := bbb ;
+A := B ;
+A := (cons A nil)
+
+%
+write A
