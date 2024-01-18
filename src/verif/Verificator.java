@@ -342,7 +342,6 @@ public class Verificator {
             } else {
                 throw new RuntimeException("Multiple assignment of  " + filsGauche.getChild(0).getText());
             }
-            //System.out.println(variables);
             filsGauche=(CommonTree)(filsGauche.getChild(1));
             gauche++;
         }
@@ -363,7 +362,6 @@ public class Verificator {
         CommonTree condition=(CommonTree)(noeud.getChild(0).getChild(0)); // Noeud Var ou fonction
         //Cas Var: on verifie que ca soit bien defini.
         if(condition.getText().equals("Var")) {
-            //System.out.println(condition.getChild(0).getText());
             if (!verifVar(condition.getChild(0).getText())) {
                 throw new RuntimeException("Undefined variable "+condition.getChild(0).getText());
             }

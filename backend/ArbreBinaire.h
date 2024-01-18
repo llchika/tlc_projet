@@ -16,47 +16,42 @@
  *                                   alors A!=C
  */
 
-class ArbreBinaire
-{
+class ArbreBinaire {
 private:
-        // Initialement un noeud
-        std::shared_ptr<ArbreBinaire> m_left = nullptr;  // Fils gauche
-        std::shared_ptr<ArbreBinaire> m_right = nullptr; // Fils droit
-        // Setters                                   Copie profonde                                                                     
-        void setLeft(const std::shared_ptr<ArbreBinaire> &left);     
-        void setRight(const std::shared_ptr<ArbreBinaire> &right); 
+    // Initialement un noeud
+    std::shared_ptr<ArbreBinaire> m_left = nullptr;  // Fils gauche
+    std::shared_ptr<ArbreBinaire> m_right = nullptr; // Fils droit
+    // Setters                                   Copie profonde                                                                     
+    void setLeft(const std::shared_ptr<ArbreBinaire> &left);     
+    void setRight(const std::shared_ptr<ArbreBinaire> &right); 
 
 public:
-        // Constructeurs
-        /**
-         * @param left: fils gauche
-         * @param right: fils droit
-        */
-        ArbreBinaire(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right);
+    // Constructeurs
+    /**
+     * @param left: fils gauche
+     * @param right: fils droit
+    */
+    ArbreBinaire(const std::shared_ptr<ArbreBinaire> &left, const std::shared_ptr<ArbreBinaire> &right);
 
-        ArbreBinaire(); // Arbre feuille
+    ArbreBinaire(); // Arbre feuille
 
-        /**
-         * @param autre: arbre à copier. Copie pronfonde
-        */
-        ArbreBinaire(const std::shared_ptr<ArbreBinaire> &autre);
+    /**
+     * @param autre: arbre à copier. Copie pronfonde
+    */
+    ArbreBinaire(const std::shared_ptr<ArbreBinaire> &autre);
 
-        // Destructeur
-        ~ArbreBinaire(){}; // automatique
+    // Destructeur
+    ~ArbreBinaire(){}; // automatique
 
-        // Getters
-        std::shared_ptr<ArbreBinaire> getLeft() const;  
-        std::shared_ptr<ArbreBinaire> getRight() const; 
+    // Getters
+    std::shared_ptr<ArbreBinaire> getLeft() const;  
+    std::shared_ptr<ArbreBinaire> getRight() const; 
 
-        
+    // Operator=      
+    void operator=(const ArbreBinaire &right); 
 
-        // Operator=      
-        void operator=(const ArbreBinaire &right); 
-
-        /**
-         * @return le nombre de feuilles dans l'arbre. Juste utile pour les tests ! à surtout pas utiliser en dehors !!!
-        */          
-        int compterFeuilles() const ; 
-
-
+    /**
+     * @return le nombre de feuilles dans l'arbre. Juste utile pour les tests ! à surtout pas utiliser en dehors !!!
+    */          
+    int compterFeuilles() const ; 
 };
