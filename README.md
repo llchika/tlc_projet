@@ -7,56 +7,48 @@ Le projet est structuré ainsi:
 ```c
 .
 ├── backend                 // Bibliothèque native (C++)
-│   ├── ArbreBinaire.h      //Classe definissant la structure d'arbre
-│   ├── ArbreBinaire.cpp
-│   ├── BackendExplication.md  //Explication backend
-│   ├── CodeTranslator.h    //Classe traduction de code 3 adresses vers le code C++
-│   ├── CodeTranslator.cpp
-│   ├── RunTime.cpp        //Contient les fonctions nécessaires à l'execution du code C++
-│   ├── testBackend.cpp    //Couverture de test
-
 ├── grammaire               
 │   ├── antlr.jar
 │   └── while.g             // Grammaire de While (ANTLR)
-│   ├── description_ast.md  //Description de l'ast, de la grammaire
-
 ├── programmes              // Exemples de programmes While
 ├── src                     // Travail sur l'AST (Java)
 │   ├── adresses            // Traduction vers code 3 adresses
 │   ├── verif               // Analyse sémantique
 │   ├── utils
 │   └── Compilator.java     // Main
-└── swl                     // Bibliothèque standard While
+├── manifest.txt            // Manifest nécessaire à la création du .jar
 ├── README.md
-├── Makefile                //Chaîne de compilation
+├── Makefile                // Chaîne de compilation
+└── whilec.sh               // Script d'utilisation du compilateur
 ```
 
 ## Compilation
-La compilation du projet se fait via un Makefile.<br>
-Testé sous Linux (Debian & Ubuntu), devrait à priori fonctionner pour Linux/MacOS, mais pas pour Windows (ce qui est logique car Java est un langage **universel**)<br><br>
+La compilation du projet se fait via un Makefile.
+
+Ce dernier a été testé sous Linux (Debian & Ubuntu).
+
 Pour compiler le compilateur
 ```
-make
+make jar
 ```
 
-<br>
+Une fois le jar créé, le compilateur s'utilise via un script
+```
+./whilec.sh file
+```
+
+Par exemple, pour compiler programmes/test.while (fourni avec le code)
+```
+./whilec.sh programmes/test.while
+```
+
+## Autre commandes
+Pour tester le backend
+```
+make testArbre
+```
 
 Pour nettoyer le projet
 ```
 make clean
-```
-
-<br>
-
-Pour lancer le projet
-```
-make file=fichier.while start
-```
-Par exemple, pour compiler programmes/test.while
-```
-make file=programmes/test.while start
-```
-Pour tester le backend
-```
-make testArbre
 ```
