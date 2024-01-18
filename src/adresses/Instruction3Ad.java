@@ -12,9 +12,9 @@ public class Instruction3Ad {
         //op unaires :
         copy, setTo, hd, tl,newConst,
         //appels de fontions :
-        functCall, addParam,
+        functCall, param,
         //définition de fonctions :
-        returns, param, beginFun, endFun
+        returns, pop, begin, endFun
     }
 
     public Instruction3Ad(String result, Operator operator, String op1, String op2)

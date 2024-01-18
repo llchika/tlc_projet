@@ -33,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.antlr.runtime.tree.*;
 
-import com.sun.org.apache.bcel.internal.generic.Instruction;
+// import com.sun.org.apache.bcel.internal.generic.Instruction;
 //import com.sun.source.tree.Tree;
 
 import src.adresses.Instruction3Ad;
@@ -76,77 +76,99 @@ public class Generator {
 
 
 
-    private static void generateSet(Tree arbre, List<Instruction3Ad> functCode)
+    private static void generateFrag(Tree frag, List<Instruction3Ad> functCode)
     {
         // TODO : corps de la fonction
+            switch (frag.toString())
+            {
+                case "nop" :
+                break;
+                case "Set" :
+                CommonTree filsGauche=(CommonTree)(frag.getChild(0)); // À gauche du égal
+                CommonTree filsDroit=(CommonTree)(frag.getChild(1)); // À droite du égal
+                for(int i = 0 ; i < filsDroit.getChildCount() ; i++)
+                {
+                    switch (filsDroit.getChild(i).getText())
+                    {
+                        case "Var": {
+                            functCode.add(new Instruction3Ad(filsGauche.getChild(i).getText(), Instruction3Ad.Operator.setTo, "", ""));
+                        }
+                    }
+                }
+
+                break;
+                // case "If" :
+                // generateIf(instruction, functCode);
+                // break;
+                // case "While" :
+                // generateWhile(instruction, functCode);
+                // break;
+                // case "For" :
+                // generateFor(instruction, functCode);
+                // break;
+                // case "ForEach" :
+                // generateForeach(instruction, functCode);
+                // break;
+            }
         
     }
 
 
-    private static void generateIf(Tree arbre, List<Instruction3Ad> functCode)
-    {
-        // TODO : corps de la fonction
-    }
 
-    private static void generateWhile(Tree arbre, List<Instruction3Ad> functCode)
-    {
-        // TODO : corps de la fonction
-    }
-
-    private static void generateFor(Tree arbre, List<Instruction3Ad> functCode)
-    {
-        // TODO : corps de la fonction
-    }
-
-    private static void generateForeach(Tree arbre, List<Instruction3Ad> functCode)
-    {
-        // TODO : corps de la fonction
-    }
 
     // Generation du code d'une fonction
     //  - while, for, foreach, if
     //  - constructeur d'arbre, de liste
     //  - affectation, copie, comparaison, hd, tl, appel fonction quelconque
-    private static void generateFunct(Tree arbre) {
-        System.out.println("fonct : " + arbre.toString());
+    private static void generateFunct(Tree arbre) throws RuntimeException {
+        // Arborescence de la fonction :
+        // Function
+        // |---<name>
+        // |---Definition
+        //     |---Input
+        //     |---Corps
+        //     |---Output
+        String name = arbre.getChild(0).toString();
 
         // TODO : stockage dans une autre liste pour effectuer les opti directement à l'échelle de la fonction
         List<Instruction3Ad> functCode = code;
+
 
         // Identification et linkage des différentes composantes de la fonction
         Tree input = null;
         Tree instructions = null;
         Tree output = null;
-        for (int i = 1 ; i < arbre.getChildCount() ; i++)
+        Tree definition = arbre.getChild(1);
+        for (int i = 0 ; i < definition.getChildCount() ; i++)
         {
-            Tree t = arbre.getChild(i);
-            switch (t.toString())
-            {
-            case "Input" :
+            Tree t = definition.getChild(i);
+            if (t.toString().equals("Input"))
                 input = t;
-                break;
-            case "Instructions" :
+            else if (t.toString().equals("Corps"))
                 instructions = t;
-                break;
-            case "Output" :
+            else if (t.toString().equals("Output"))
                 output = t;
-                break;
-            default :
-                System.out.println("error in Generator.generateFunct() : unespected token " + t.toString());
-            }
+            else
+                System.out.println("error in Generator.generateFunct() : unespected token \"" + t.toString() + "\"");
         }
+        // Erreurs pour le debug
+        if (instructions == null)
+        {
+            throw new RuntimeException("No match for the corpse of the function " + name);
+        }
+        if (output == null)
+            throw new RuntimeException("No match for the output of the function " + name);
 
 
-        // Instruction de début de fonction
-        functCode.add(new Instruction3Ad("", Instruction3Ad.Operator.beginFun, arbre.getChild(0).toString(), ""));
+        // Instruction 3 adr de début de fonction
+        functCode.add(new Instruction3Ad("", Instruction3Ad.Operator.begin, name, ""));
 
-        // Instructions sur les paramètres de fonction
+        // Instructions pour les paramètres de fonction
         if (input != null)
         {
-            System.out.println("params : " + input.toString());
 
             for (int i = 0 ; i < input.getChildCount() ; i++) {
-                functCode.add(new Instruction3Ad("", Instruction3Ad.Operator.param, input.getChild(i).toString(), ""));
+                functCode.add(new Instruction3Ad("", Instruction3Ad.Operator.pop, input.getChild(i).toString(), ""));
             }
         }
 
@@ -155,26 +177,7 @@ public class Generator {
         {
             Tree instruction = instructions.getChild(i);
             // TODO : Generation d'instruction
-            switch (instruction.toString())
-            {
-                case "nop" :
-                break;
-                case "Set" :
-                generateSet(instruction, functCode);
-                break;
-                case "BoucleIf" :
-                generateIf(instruction, functCode);
-                break;
-                case "BoucleWhile" :
-                generateWhile(instruction, functCode);
-                break;
-                case "BoucleFor" :
-                generateFor(instruction, functCode);
-                break;
-                case "BoucleForeach" :
-                generateForeach(instruction, functCode);
-                break;
-            }
+            generateFrag(instruction, functCode);
         }
 
         // Retours de la fonction
@@ -199,10 +202,8 @@ public class Generator {
     // Génération du code global
     public static void generateCodeFrom(CommonTree arbre) {
 
-        System.out.println(arbre.toString());
         if (arbre.toString().equals("nil")) {
             for (int i = 0 ; i < arbre.getChildCount() ; i++) {
-                System.out.println("fonction : " + arbre.getChild(i).toString());
                 generateFunct(arbre.getChild(i));
             }
         }
@@ -220,12 +221,19 @@ public class Generator {
         }
     }
 
-    public static void afficheAST(Tree arbre) {
-        System.out.print(arbre.toString() + " (");
+
+    private static void afficheASTAvecDecalage(Tree arbre, int decalage) {
+        System.out.println(arbre.toString());
         for (int i = 0 ; i < arbre.getChildCount() ; i++) {
-            System.out.print("ind " + i + " : ");
-            afficheAST(arbre.getChild(i));
+            for (int j = 0 ; j < decalage ; j++)
+                System.out.print("|   ");
+            System.out.print("|---");
+            afficheASTAvecDecalage(arbre.getChild(i), decalage + 1);
         }
-        System.out.print(" )");
+    }
+
+    public static void afficheAST(Tree arbre) {
+        System.out.println("AST :");
+        afficheASTAvecDecalage(arbre, 0);
     }
 }
