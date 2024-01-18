@@ -44,6 +44,7 @@ public class Compilator {
 
             System.out.println("Code généré");
             Generator.printCode();
+            Generator.writeCode();
         } else {
             System.out.println("Echec de la build");
         }

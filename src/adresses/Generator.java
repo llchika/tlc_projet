@@ -32,6 +32,7 @@ package src.adresses;
 import java.util.LinkedList;
 import java.util.List;
 import org.antlr.runtime.tree.*;
+import java.io.FileWriter;
 
 // import com.sun.org.apache.bcel.internal.generic.Instruction;
 //import com.sun.source.tree.Tree;
@@ -218,6 +219,20 @@ public class Generator {
     public static void printCode() {
         for (Instruction3Ad ins : code) {
             System.out.println(ins);
+        }
+    }
+
+
+
+    public static void writeCode() {
+        try {
+            FileWriter fw=new FileWriter("build/sortieTroisAdresses.txt"); 
+            for (Instruction3Ad ins : code) {
+                fw.write(ins.toString()+'\n');
+            }
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
