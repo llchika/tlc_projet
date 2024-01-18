@@ -9,6 +9,7 @@ std::shared_ptr<ArbreBinaire> symb() {
     return arbre;
 }
 
+
         //(cons) = nil construit un arbre vide 
 /**
  * @return nullptr<==> feuille//Arbre vide
@@ -16,6 +17,7 @@ std::shared_ptr<ArbreBinaire> symb() {
 std::shared_ptr<ArbreBinaire> cons() {
     return nullptr;
 }
+
 
         // (cons A B) construit un arbre binaire ayant A pour fils gauche et B pour fils droit 
 /**
@@ -28,6 +30,7 @@ std::shared_ptr<ArbreBinaire> cons(const std::shared_ptr<ArbreBinaire> &left, co
     return arbre;
 }
 
+
         // (cons T) = T retourne l’arbre T 
 /**
  * @param arbre shared_ptr pointant sur un arbre à retourner
@@ -37,6 +40,7 @@ std::shared_ptr<ArbreBinaire> cons(const std::shared_ptr<ArbreBinaire> &arbre) {
     std::shared_ptr<ArbreBinaire> newarbre = std::make_shared<ArbreBinaire>(arbre);
     return newarbre;
 }
+
 
         //(cons T1 T2 … Tn) = (cons T1 (cons T2 … (cons Tn-1 Tn) …)
         //Pas besoin ? enfin jamais on va avoir + de deux args 
@@ -48,6 +52,7 @@ std::shared_ptr<ArbreBinaire> cons(const std::shared_ptr<ArbreBinaire> &arbre) {
 std::shared_ptr<ArbreBinaire> list() {
     return cons();
 }
+
 
         //(list T) = (cons T nil) construit une liste a un élément
 /**

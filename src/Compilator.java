@@ -39,7 +39,7 @@ public class Compilator {
 
         boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
         if (valide) {
-            Generator.execute(); // Génération code 3 adresses
+            Generator.execute(arbre); // Génération code 3 adresses
         }
     }
 }
