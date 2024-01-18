@@ -44,7 +44,6 @@ public class Generator {
     private static int nbRegister = 0;
 
     public static void execute() {
-        System.out.println("Test");
     }
 
     // Squelette d'une méthode de génération
@@ -226,7 +225,7 @@ public class Generator {
 
     public static void writeCode() {
         try {
-            FileWriter fw=new FileWriter("build/sortieTroisAdresses.txt"); 
+            FileWriter fw=new FileWriter("sortieTroisAdresses.txt"); 
             for (Instruction3Ad ins : code) {
                 fw.write(ins.toString()+'\n');
             }

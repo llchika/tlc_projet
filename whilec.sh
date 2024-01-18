@@ -1,0 +1,1 @@
+java -cp .:grammaire/antlr.jar:Compilator.jar src.Compilator "$1"

@@ -50,6 +50,11 @@ start: $(BUILD_DIR)/src/$(EXE).class
 	@echo "$(CYAN)Executing$(NC) $(GREEN)$(EXE)$(NC)"
 	@java -cp .:$(ANTLRPATH):$(BUILD_DIR) src/$(EXE) "$(file)"
 
+# Build un .jar
+jar: $(BUILD_DIR)/src/$(EXE).class
+	@echo "$(CYAN)Building$(NC) $(GREEN)$(EXE).jar$(NC)"
+	@jar cfm Compilator.jar manifest.txt -C build/ .
+
 # Test du backEnd
 testBackend:  backend/*.h 
 	g++ backend/testBackend.cpp   backend/ArbreBinaire.cpp  -o test 
@@ -58,7 +63,5 @@ testBackend:  backend/*.h
 # Nettoie le projet
 clean:
 	@echo "$(RED)Cleaning$(NC) $(GREEN)project$(NC)"
-	@rm -fr build
-	@rm -fr src/lp
-	@rm -fr grammaire/output
+	@rm -fr Compilator.jar sortieTroisAdresses.txt grammaire/output src/lp build
 	@find . -name *.class -exec rm {} \;

@@ -19,7 +19,6 @@ import java.io.File;
  */
 public class Compilator {
     public static void main(String[] args) throws Exception {
-        System.out.println("Build begin");
         if (args.length!=0) {
             File file=new File(args[0]);
             if(!file.exists()) {
@@ -37,16 +36,15 @@ public class Compilator {
 
         CommonTree arbre=(CommonTree)(parser.axiome().getTree()); // Génération de l'AST
 
-        boolean valide=true; //Verificator.execute(arbre); // Vérifications sur l'AST
+        boolean valide=Verificator.execute(arbre); // Vérifications sur l'AST
         if (valide) {
-            Generator.afficheAST(arbre);
+            //Generator.afficheAST(arbre);
             Generator.generateCodeFrom(arbre); // Génération code 3 adresses
 
-            System.out.println("Code généré");
-            Generator.printCode();
+            //Generator.printCode();
             Generator.writeCode();
         } else {
-            System.out.println("Echec de la build");
+            System.out.println("Echec du build");
         }
     }
 }
